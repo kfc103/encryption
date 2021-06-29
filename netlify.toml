@@ -5,6 +5,6 @@
   # This is the directory is publishing to netlify's CDN
   #publish = "build"
 
-[dev]
+#[dev]
   # Local dev command. A.k.a npm start
-  command = "react-scripts start"
+  #command = "react-scripts start"
