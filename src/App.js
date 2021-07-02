@@ -4,7 +4,8 @@ import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import "./styles.css";
 
-import { encrypt, decrypt } from "./util/Encryptor";
+import { encrypt, decrypt } from "./utils/Encryptor";
+import api from "./utils/api";
 
 export default function App() {
   const [message, setMessage] = useState("Hello World");
@@ -43,6 +44,17 @@ export default function App() {
       setDecryptPassphrase(event.target.value);
     else if (event.target.id === "message-input")
       setMessage(event.target.value);
+  };
+
+  const testing = () => {
+    api.readAll().then(
+      (todos) => {
+        console.log("all todos", todos);
+      },
+      (error) => {
+        console.log("componentDidMount readAll fail", error);
+      }
+    );
   };
 
   return (
@@ -90,6 +102,10 @@ export default function App() {
 
       <h2> {ciphertext} </h2>
       <h2> {originalText} </h2>
+
+      <Button variant="outlined" color="primary" onClick={testing}>
+        Test
+      </Button>
     </div>
   );
 }
