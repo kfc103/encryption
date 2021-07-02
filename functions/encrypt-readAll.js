@@ -9,30 +9,33 @@ exports.handler = (event, context) => {
     secret: process.env.FAUNADB_SERVER_SECRET
   });
   const id = getId(event.path);
-  console.log(`Function 'encrpyt-read' invoked. Read id: ${id}`);
-  return client
-    .query(q.Paginate(q.Match(q.Ref("indexes/all_passwords"))))
-    .then((response) => {
-      const refs = response.data;
-      console.log("Refs", refs);
-      console.log(`${refs.length} refs found`);
-      // create new query out of refs. http://bit.ly/2LG3MLg
-      const getAllDataQuery = refs.map((ref) => {
-        return q.Get(ref);
-      });
-      // then query the refs
-      return client.query(getAllDataQuery).then((ret) => {
+  console.log(`Function 'encrpyt-readAll' invoked.`);
+  return (
+    client
+      //.query(q.Paginate(q.Match(q.Ref("indexes/all_passwords"))))
+      .query(q.Paginate(q.Match(q.Index("all_passwords"))))
+      .then((response) => {
+        const refs = response.data;
+        console.log("Refs", refs);
+        console.log(`${refs.length} refs found`);
+        // create new query out of refs. http://bit.ly/2LG3MLg
+        const getAllDataQuery = refs.map((ref) => {
+          return q.Get(ref);
+        });
+        // then query the refs
+        return client.query(getAllDataQuery).then((ret) => {
+          return {
+            statusCode: 200,
+            body: JSON.stringify(ret)
+          };
+        });
+      })
+      .catch((error) => {
+        console.log("error", error);
         return {
-          statusCode: 200,
-          body: JSON.stringify(ret)
+          statusCode: 400,
+          body: JSON.stringify(error)
         };
-      });
-    })
-    .catch((error) => {
-      console.log("error", error);
-      return {
-        statusCode: 400,
-        body: JSON.stringify(error)
-      };
-    });
+      })
+  );
 };

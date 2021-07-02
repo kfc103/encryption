@@ -14,14 +14,14 @@ exports.handler = (event, context) => {
     .query(q.Paginate(q.Match(q.Index("pwd_by_user_id"), id)))
     .then((response) => {
       const refs = response.data;
-      console.log("Todo refs", refs);
-      console.log(`${refs.length} todos found`);
-      // create new query out of todo refs. http://bit.ly/2LG3MLg
-      const getAllTodoDataQuery = refs.map((ref) => {
+      console.log("Refs", refs);
+      console.log(`${refs.length} refs found`);
+      // create new query out of refs. http://bit.ly/2LG3MLg
+      const getAllDataQuery = refs.map((ref) => {
         return q.Get(ref);
       });
       // then query the refs
-      return client.query(getAllTodoDataQuery).then((ret) => {
+      return client.query(getAllDataQuery).then((ret) => {
         return {
           statusCode: 200,
           body: JSON.stringify(ret)
