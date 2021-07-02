@@ -11,7 +11,7 @@ exports.handler = (event, context) => {
   const id = getId(event.path);
   console.log(`Function 'encrpyt-read' invoked. Read id: ${id}`);
   return client
-    .query(q.Paginate(q.Match(q.Index("pwd_by_user_id"), 1)))
+    .query(q.Paginate(q.Match(q.Index("pwd_by_user_id"), id)))
     .then((response) => {
       const refs = response.data;
       console.log("Todo refs", refs);
