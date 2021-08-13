@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import "/src/styles.css";
+import "./styles.css";
 import Test from "./components/Test";
 import PassphraseDialog from "./components/PassphraseDialog";
 import PassphraseNewDialog from "./components/PassphraseNewDialog";
