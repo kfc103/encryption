@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -41,6 +42,7 @@ function HideOnScroll(props) {
 
 export default function App() {
   const classes = useStyles();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const netlifyAuth = {
     isAuthenticated: false,
@@ -49,7 +51,7 @@ export default function App() {
       this.isAuthenticated = true;
       netlifyIdentity.open();
       netlifyIdentity.on("login", (user) => {
-        console.log(user);
+        setIsAuthenticated(true);
         this.user = user;
         callback(user);
       });
@@ -58,6 +60,7 @@ export default function App() {
       this.isAuthenticated = false;
       netlifyIdentity.logout();
       netlifyIdentity.on("logout", () => {
+        setIsAuthenticated(false);
         this.user = null;
         callback();
       });
@@ -94,7 +97,7 @@ export default function App() {
             <Typography align="left" variant="h6" className={classes.title}>
               eSecret
             </Typography>
-            {netlifyAuth.isAuthenticated ? (
+            {isAuthenticated ? (
               <Button onClick={logout} color="inherit">
                 Logout
               </Button>
@@ -107,7 +110,7 @@ export default function App() {
         </AppBar>
       </HideOnScroll>
       <Toolbar />
-      {netlifyAuth.isAuthenticated && (
+      {isAuthenticated && (
         <div>
           <Dashboard />
         </div>
