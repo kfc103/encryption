@@ -9,7 +9,7 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { useConfirmationDialog } from "./ConfirmationDialog";
-import { decrypt } from "./utils/Dencryptor";
+import { decrypt } from "../utils/Dencryptor";
 import { useSecretInfoDialog } from "./SecretInfoDialog";
 import { useMySnackbar } from "./MySnackbar";
 

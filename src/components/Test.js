@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
-import { encrypt, decrypt } from "./utils/Dencryptor";
-import api from "./utils/api";
+import { encrypt, decrypt } from "../utils/Dencryptor";
+import api from "../utils/api";
 
 export default function Test() {
   const [message, setMessage] = useState("Hello World");

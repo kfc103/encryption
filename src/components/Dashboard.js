@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { DataGrid } from "@material-ui/data-grid";
-import { encrypt, decrypt } from "./utils/Dencryptor";
+import { encrypt, decrypt } from "../utils/Dencryptor";
 import Alert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 
