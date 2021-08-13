@@ -86,6 +86,7 @@ export default function App() {
       this.isAuthenticated = true;
       netlifyIdentity.open();
       netlifyIdentity.on("login", (user) => {
+        console.log(user);
         this.user = user;
         callback(user);
       });
