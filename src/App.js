@@ -1,111 +1,152 @@
-import React, { useState } from "react";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
-import "./styles.css";
-
-import { encrypt, decrypt } from "./utils/Encryptor";
-import api from "./utils/api";
+import { useState, useEffect } from "react";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import "/src/styles.css";
+import Test from "./components/Test";
+import PassphraseDialog from "./components/PassphraseDialog";
+import PassphraseNewDialog from "./components/PassphraseNewDialog";
+//import SecretInfoDialog from "./components/SecretInfoDialog";
+import SecretTable from "./components/SecretTable";
+import api from "/src/utils/api";
+import { ConfirmationDialogProvider } from "/src/components/ConfirmationDialog";
+import { SecretInfoDialogProvider } from "/src/components/SecretInfoDialog";
+import { MySnackbarProvider } from "/src/components/MySnackbar";
+import netlifyIdentity from "netlify-identity-widget";
 
 export default function App() {
-  const [message, setMessage] = useState("Hello World");
-  const [ciphertext, setCiphertext] = useState("");
-  const [originalText, setOriginalText] = useState("");
-  const [encryptPassphrase, setEncryptPassphrase] = useState("");
-  const [decryptPassphrase, setDecryptPassphrase] = useState("");
+  const [rows, setRows] = useState([]);
+  const [busy, setBusy] = useState(false);
+  const [passphraseDialogOpen, setPassphraseDialogOpen] = useState(false);
+  const [passphraseNewDialogOpen, setPassphraseNewDialogOpen] = useState(false);
+  const [passphrase, setPassphrase] = useState("");
 
-  function handleClickEncrypt() {
-    // Encrypt
-    /*const ciphertext = CryptoJS.AES.encrypt(
-      message,
-      encryptPassphrase
-    ).toString();*/
-    const ciphertext = encrypt(message, encryptPassphrase);
+  useEffect(() => {
+    async function init() {
+      setBusy(true);
+      setPassphrase("");
+      setPassphraseNewDialogOpen(false);
+      setPassphraseDialogOpen(false);
+      const rows = await api.readAll();
+      if (rows.length === 0) setPassphraseNewDialogOpen(true);
+      else setPassphraseDialogOpen(true);
+      setRows(rows);
+      setBusy(false);
+    }
+    init();
+  }, []);
 
-    setCiphertext(ciphertext);
-    console.log(ciphertext);
-  }
+  const saveItem = (item) => {
+    console.log("saveItem");
+    const myPromise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const newRows = [...rows];
+        const index = rows.findIndex((row) => {
+          return row.id === item.id;
+        });
+        if (index !== -1) {
+          // update item
+          newRows[index] = item;
+        } else {
+          // create item
+          item.id = newRows.length + 1;
+          newRows.push(item);
+        }
+        setRows(newRows);
 
-  function handleClickDecrypt() {
-    // Decrypt
-    /*const decrypted = CryptoJS.AES.decrypt(ciphertext, decryptPassphrase);
-    var originalText = decrypted.toString(CryptoJS.enc.Utf8);*/
-    const originalText = decrypt(ciphertext, decryptPassphrase);
-
-    setOriginalText(originalText);
-
-    console.log(originalText);
-  }
-
-  const handleChange = (event) => {
-    if (event.target.id === "encrypt-passphrase-input")
-      setEncryptPassphrase(event.target.value);
-    else if (event.target.id === "decrypt-passphrase-input")
-      setDecryptPassphrase(event.target.value);
-    else if (event.target.id === "message-input")
-      setMessage(event.target.value);
+        console.log("saveItem resolved");
+        resolve();
+      }, 100);
+    });
+    return myPromise;
   };
 
-  const testing = () => {
-    api.readAll().then(
-      (todos) => {
-        console.log("all todos", todos);
-      },
-      (error) => {
-        console.log("componentDidMount readAll fail", error);
-      }
-    );
+  const deleteItem = (item) => {
+    console.log("deleteItem");
+    const myPromise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const newRows = [...rows];
+        const index = rows.findIndex((row) => {
+          return row.id === item.id;
+        });
+        if (index !== -1) {
+          newRows.splice(index, 1);
+        }
+        setRows(newRows);
+
+        console.log("deleteItem resolved");
+        resolve();
+      }, 100);
+    });
+    return myPromise;
+  };
+
+  const netlifyAuth = {
+    isAuthenticated: false,
+    user: null,
+    authenticate(callback) {
+      this.isAuthenticated = true;
+      netlifyIdentity.open();
+      netlifyIdentity.on("login", (user) => {
+        this.user = user;
+        callback(user);
+      });
+    },
+    signout(callback) {
+      this.isAuthenticated = false;
+      netlifyIdentity.logout();
+      netlifyIdentity.on("logout", () => {
+        this.user = null;
+        callback();
+      });
+    }
+  };
+
+  const Dashboard = () => {
+    const login = () => {
+      console.log("login");
+      netlifyAuth.authenticate(() => {
+        console.log("authenticate");
+      });
+    };
+
+    if (busy) return <LinearProgress />;
+    else
+      return (
+        <ConfirmationDialogProvider>
+          <MySnackbarProvider>
+            <SecretInfoDialogProvider>
+              {passphrase && (
+                <SecretTable
+                  rows={rows}
+                  passphrase={passphrase}
+                  saveItem={saveItem}
+                  deleteItem={deleteItem}
+                />
+              )}
+              <PassphraseDialog
+                open={passphraseDialogOpen}
+                setOpen={setPassphraseDialogOpen}
+                isCancelable={false}
+                ciphertextList={rows.map((item) => {
+                  return item.password;
+                })}
+                setPassphrase={setPassphrase}
+              />
+              <PassphraseNewDialog
+                open={passphraseNewDialogOpen}
+                setOpen={setPassphraseNewDialogOpen}
+                isCancelable={false}
+                setPassphrase={setPassphrase}
+              />
+              <button onClick={login}>Log in</button>
+            </SecretInfoDialogProvider>
+          </MySnackbarProvider>
+        </ConfirmationDialogProvider>
+      );
   };
 
   return (
     <div className="App">
-      <div>
-        <TextField
-          required
-          id="message-input"
-          label="Message"
-          value={message}
-          onChange={handleChange}
-        />
-        <TextField
-          required
-          id="encrypt-passphrase-input"
-          label="Encrypt Passphrase"
-          type="password"
-          value={encryptPassphrase}
-          onChange={handleChange}
-        />
-        <Button variant="outlined" color="primary" onClick={handleClickEncrypt}>
-          Encrypt
-        </Button>
-      </div>
-      <Divider />
-      <div>
-        <TextField
-          disabled
-          id="ciphertext"
-          label="Ciphertext"
-          value={ciphertext}
-        />
-        <TextField
-          required
-          id="decrypt-passphrase-input"
-          label="Decrypt Passphrase"
-          type="password"
-          value={decryptPassphrase}
-          onChange={handleChange}
-        />
-        <Button variant="outlined" color="primary" onClick={handleClickDecrypt}>
-          Decrypt
-        </Button>
-      </div>
-
-      <h2> {ciphertext} </h2>
-      <h2> {originalText} </h2>
-
-      <Button variant="outlined" color="primary" onClick={testing}>
-        Test
-      </Button>
+      <Dashboard />
     </div>
   );
 }
