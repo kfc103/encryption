@@ -1,13 +1,8 @@
 import { useState, useEffect } from "react";
 import { DataGrid } from "@material-ui/data-grid";
-import Button from "@material-ui/core/Button";
-import DecryptDialog from "./DecryptDialog";
-import PassphraseDialog from "./PassphraseDialog";
-import { encrypt, decrypt } from "/src/utils/Dencryptor";
+import { encrypt, decrypt } from "./utils/Dencryptor";
 import Alert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
-//import api from "/src/utils/api";
-import SecretTable from "./SecretTable";
 
 const columns = [
   {

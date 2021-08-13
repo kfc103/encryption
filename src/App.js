@@ -6,10 +6,10 @@ import PassphraseDialog from "./components/PassphraseDialog";
 import PassphraseNewDialog from "./components/PassphraseNewDialog";
 //import SecretInfoDialog from "./components/SecretInfoDialog";
 import SecretTable from "./components/SecretTable";
-import api from "/src/utils/api";
-import { ConfirmationDialogProvider } from "/src/components/ConfirmationDialog";
-import { SecretInfoDialogProvider } from "/src/components/SecretInfoDialog";
-import { MySnackbarProvider } from "/src/components/MySnackbar";
+import api from "./utils/api";
+import { ConfirmationDialogProvider } from "./components/ConfirmationDialog";
+import { SecretInfoDialogProvider } from "./components/SecretInfoDialog";
+import { MySnackbarProvider } from "./components/MySnackbar";
 import netlifyIdentity from "netlify-identity-widget";
 
 export default function App() {

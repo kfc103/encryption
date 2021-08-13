@@ -8,7 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
-import { encrypt, decrypt } from "/src/utils/Dencryptor";
+import { encrypt, decrypt } from "./utils/Dencryptor";
 import { useConfirmationDialog } from "./ConfirmationDialog";
 import { useForm, Controller } from "react-hook-form";
 
