@@ -80,7 +80,7 @@ export default function App() {
   return (
     <div className="App">
       <CssBaseline />
-      <HideOnScroll {...this.props}>
+      <HideOnScroll {...this?.props}>
         <AppBar>
           <Toolbar>
             <IconButton
