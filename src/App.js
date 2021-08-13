@@ -1,83 +1,46 @@
-import { useState, useEffect } from "react";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import Slide from "@material-ui/core/Slide";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 import "./styles.css";
-import Test from "./components/Test";
-import PassphraseDialog from "./components/PassphraseDialog";
-import PassphraseNewDialog from "./components/PassphraseNewDialog";
-//import SecretInfoDialog from "./components/SecretInfoDialog";
-import SecretTable from "./components/SecretTable";
-import api from "./utils/api";
-import { ConfirmationDialogProvider } from "./components/ConfirmationDialog";
-import { SecretInfoDialogProvider } from "./components/SecretInfoDialog";
-import { MySnackbarProvider } from "./components/MySnackbar";
+import Dashboard from "./components/Dashboard";
 import netlifyIdentity from "netlify-identity-widget";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1
+  },
+  menuButton: {
+    marginRight: theme.spacing(2)
+  },
+  title: {
+    flexGrow: 1
+  }
+}));
+
+function HideOnScroll(props) {
+  const { children, window } = props;
+  // Note that you normally won't need to set the window ref as useScrollTrigger
+  // will default to window.
+  // This is only being set here because the demo is in an iframe.
+  const trigger = useScrollTrigger({ target: window ? window() : undefined });
+
+  return (
+    <Slide appear={false} direction="down" in={!trigger}>
+      {children}
+    </Slide>
+  );
+}
+
 export default function App() {
-  const [rows, setRows] = useState([]);
-  const [busy, setBusy] = useState(false);
-  const [passphraseDialogOpen, setPassphraseDialogOpen] = useState(false);
-  const [passphraseNewDialogOpen, setPassphraseNewDialogOpen] = useState(false);
-  const [passphrase, setPassphrase] = useState("");
-
-  useEffect(() => {
-    async function init() {
-      setBusy(true);
-      setPassphrase("");
-      setPassphraseNewDialogOpen(false);
-      setPassphraseDialogOpen(false);
-      const rows = await api.readAll();
-      if (rows.length === 0) setPassphraseNewDialogOpen(true);
-      else setPassphraseDialogOpen(true);
-      setRows(rows);
-      setBusy(false);
-    }
-    init();
-  }, []);
-
-  const saveItem = (item) => {
-    console.log("saveItem");
-    const myPromise = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const newRows = [...rows];
-        const index = rows.findIndex((row) => {
-          return row.id === item.id;
-        });
-        if (index !== -1) {
-          // update item
-          newRows[index] = item;
-        } else {
-          // create item
-          item.id = newRows.length + 1;
-          newRows.push(item);
-        }
-        setRows(newRows);
-
-        console.log("saveItem resolved");
-        resolve();
-      }, 100);
-    });
-    return myPromise;
-  };
-
-  const deleteItem = (item) => {
-    console.log("deleteItem");
-    const myPromise = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const newRows = [...rows];
-        const index = rows.findIndex((row) => {
-          return row.id === item.id;
-        });
-        if (index !== -1) {
-          newRows.splice(index, 1);
-        }
-        setRows(newRows);
-
-        console.log("deleteItem resolved");
-        resolve();
-      }, 100);
-    });
-    return myPromise;
-  };
+  const classes = useStyles();
 
   const netlifyAuth = {
     isAuthenticated: false,
@@ -101,53 +64,54 @@ export default function App() {
     }
   };
 
-  const Dashboard = () => {
-    const login = () => {
-      console.log("login");
-      netlifyAuth.authenticate(() => {
-        console.log("authenticate");
-      });
-    };
-
-    if (busy) return <LinearProgress />;
-    else
-      return (
-        <ConfirmationDialogProvider>
-          <MySnackbarProvider>
-            <SecretInfoDialogProvider>
-              {passphrase && (
-                <SecretTable
-                  rows={rows}
-                  passphrase={passphrase}
-                  saveItem={saveItem}
-                  deleteItem={deleteItem}
-                />
-              )}
-              <PassphraseDialog
-                open={passphraseDialogOpen}
-                setOpen={setPassphraseDialogOpen}
-                isCancelable={false}
-                ciphertextList={rows.map((item) => {
-                  return item.password;
-                })}
-                setPassphrase={setPassphrase}
-              />
-              <PassphraseNewDialog
-                open={passphraseNewDialogOpen}
-                setOpen={setPassphraseNewDialogOpen}
-                isCancelable={false}
-                setPassphrase={setPassphrase}
-              />
-              <button onClick={login}>Log in</button>
-            </SecretInfoDialogProvider>
-          </MySnackbarProvider>
-        </ConfirmationDialogProvider>
-      );
+  const login = () => {
+    console.log("login");
+    netlifyAuth.authenticate(() => {
+      console.log("authenticate");
+    });
+  };
+  const logout = () => {
+    console.log("login");
+    netlifyAuth.signout(() => {
+      console.log("signout");
+    });
   };
 
   return (
     <div className="App">
-      <Dashboard />
+      <CssBaseline />
+      <HideOnScroll {...this.props}>
+        <AppBar>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="menu"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography align="left" variant="h6" className={classes.title}>
+              eSecret
+            </Typography>
+            {netlifyAuth.isAuthenticated ? (
+              <Button onClick={logout} color="inherit">
+                Logout
+              </Button>
+            ) : (
+              <Button onClick={login} color="inherit">
+                Login
+              </Button>
+            )}
+          </Toolbar>
+        </AppBar>
+      </HideOnScroll>
+      <Toolbar />
+      {netlifyAuth.isAuthenticated && (
+        <div>
+          <Dashboard />
+        </div>
+      )}
     </div>
   );
 }

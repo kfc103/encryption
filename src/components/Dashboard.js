@@ -1,69 +1,111 @@
 import { useState, useEffect } from "react";
-import { DataGrid } from "@material-ui/data-grid";
-import { encrypt, decrypt } from "../utils/Dencryptor";
-import Alert from "@material-ui/lab/Alert";
-import Snackbar from "@material-ui/core/Snackbar";
-
-const columns = [
-  {
-    field: "login",
-    headerName: "Login",
-    width: "50vw"
-  } /*,
-  {
-    field: "password",
-    headerName: "Password",
-    width: "200"
-  }*/
-];
+import LinearProgress from "@material-ui/core/LinearProgress";
+import PassphraseDialog from "./PassphraseDialog";
+import PassphraseNewDialog from "./PassphraseNewDialog";
+import SecretTable from "./SecretTable";
+import api from "../utils/api";
+import { ConfirmationDialogProvider } from "./ConfirmationDialog";
+import { SecretInfoDialogProvider } from "./SecretInfoDialog";
+import { MySnackbarProvider } from "./MySnackbar";
 
 export default function Dashboard(props) {
-  const [snackbarProp, setSnackbarProp] = useState({
-    open: false,
-    message: ""
-  });
+  const [rows, setRows] = useState([]);
+  const [busy, setBusy] = useState(false);
+  const [passphraseDialogOpen, setPassphraseDialogOpen] = useState(false);
+  const [passphraseNewDialogOpen, setPassphraseNewDialogOpen] = useState(false);
+  const [passphrase, setPassphrase] = useState("");
 
-  const onRowClick = (params) => {
-    const ciphertext = params.row.password;
-    const decrypted = decrypt(ciphertext, props.passphrase);
-    if (decrypted) {
-      console.log("Password has been decrypted to clipboard");
-      setSnackbarProp({
-        open: true,
-        message: "Password has been decrypted to clipboard"
-      });
-      navigator.clipboard.writeText(decrypted);
+  useEffect(() => {
+    async function init() {
+      setBusy(true);
+      setPassphrase("");
+      setPassphraseNewDialogOpen(false);
+      setPassphraseDialogOpen(false);
+      const rows = await api.readAll();
+      if (rows.length === 0) setPassphraseNewDialogOpen(true);
+      else setPassphraseDialogOpen(true);
+      setRows(rows);
+      setBusy(false);
     }
-  };
+    init();
+  }, []);
 
-  const handleClose = () => {
-    setSnackbarProp({
-      open: false,
-      message: ""
+  const saveItem = (item) => {
+    console.log("saveItem");
+    const myPromise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const newRows = [...rows];
+        const index = rows.findIndex((row) => {
+          return row.id === item.id;
+        });
+        if (index !== -1) {
+          // update item
+          newRows[index] = item;
+        } else {
+          // create item
+          item.id = newRows.length + 1;
+          newRows.push(item);
+        }
+        setRows(newRows);
+
+        console.log("saveItem resolved");
+        resolve();
+      }, 100);
     });
+    return myPromise;
   };
 
-  return (
-    <div>
-      <div style={{ height: "95vh", width: "100%" }}>
-        <DataGrid
-          rows={props.rows}
-          columns={columns}
-          pageSize={5}
-          disableSelectionOnClick
-          onRowClick={onRowClick}
-        />
-      </div>
+  const deleteItem = (item) => {
+    console.log("deleteItem");
+    const myPromise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const newRows = [...rows];
+        const index = rows.findIndex((row) => {
+          return row.id === item.id;
+        });
+        if (index !== -1) {
+          newRows.splice(index, 1);
+        }
+        setRows(newRows);
 
-      <Snackbar
-        open={snackbarProp.open}
-        autoHideDuration={5000}
-        onClose={handleClose}
-      >
-        <Alert onClose={handleClose} severity="info">
-          {snackbarProp.message}
-        </Alert>
-      </Snackbar>
-    </div>
-  );
+        console.log("deleteItem resolved");
+        resolve();
+      }, 100);
+    });
+    return myPromise;
+  };
+
+  if (busy) return <LinearProgress />;
+  else
+    return (
+      <ConfirmationDialogProvider>
+        <MySnackbarProvider>
+          <SecretInfoDialogProvider>
+            {passphrase && (
+              <SecretTable
+                rows={rows}
+                passphrase={passphrase}
+                saveItem={saveItem}
+                deleteItem={deleteItem}
+              />
+            )}
+            <PassphraseDialog
+              open={passphraseDialogOpen}
+              setOpen={setPassphraseDialogOpen}
+              isCancelable={false}
+              ciphertextList={rows.map((item) => {
+                return item.password;
+              })}
+              setPassphrase={setPassphrase}
+            />
+            <PassphraseNewDialog
+              open={passphraseNewDialogOpen}
+              setOpen={setPassphraseNewDialogOpen}
+              isCancelable={false}
+              setPassphrase={setPassphrase}
+            />
+          </SecretInfoDialogProvider>
+        </MySnackbarProvider>
+      </ConfirmationDialogProvider>
+    );
 }
