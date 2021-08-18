@@ -8,6 +8,7 @@ import MyAppBar from "./components/MyAppBar";
 
 export default function App() {
   const defaultUser = localStorage.getItem("gotrue.user");
+  console.log(defaultUser);
   const [authenticatedUser, setAuthenticatedUser] = useState(defaultUser);
   const [isAuthenWidgetOpen, setIsAuthenWidgetOpen] = useState(false);
 
@@ -47,7 +48,6 @@ export default function App() {
     });
   };
 
-  netlifyIdentity.on("init", (user) => console.log("init", user));
   netlifyIdentity.on("open", () => setIsAuthenWidgetOpen(true));
   netlifyIdentity.on("close", () => setIsAuthenWidgetOpen(false));
 
