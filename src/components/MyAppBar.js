@@ -53,13 +53,15 @@ export default function MyAppBar(props) {
           <Typography align="left" variant="h6" className={classes.title}>
             eSecret
           </Typography>
-          <Typography align="left" variant="h6" className={classes.title}>
-            {authenticatedUser?.email}
-          </Typography>
           {authenticatedUser ? (
-            <Button onClick={onLogout} color="inherit">
-              Logout
-            </Button>
+            <React.Fragment>
+              <Typography align="right" variant="h6">
+                {authenticatedUser.email}
+              </Typography>
+              <Button onClick={onLogout} color="inherit">
+                Logout
+              </Button>
+            </React.Fragment>
           ) : (
             <Button onClick={onLogin} color="inherit">
               Login
@@ -67,6 +69,7 @@ export default function MyAppBar(props) {
           )}
         </Toolbar>
       </AppBar>
+      <Toolbar />
     </Slide>
   );
 }
