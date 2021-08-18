@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -13,6 +13,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import "./styles.css";
 import Dashboard from "./components/Dashboard";
 import netlifyIdentity from "netlify-identity-widget";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,14 +28,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function HideOnScroll(props) {
-  const { children, window } = props;
+  const { children, window, isAuthenticating } = props;
   // Note that you normally won't need to set the window ref as useScrollTrigger
   // will default to window.
   // This is only being set here because the demo is in an iframe.
   const trigger = useScrollTrigger({ target: window ? window() : undefined });
+  console.log(isAuthenticating);
+  //<Slide appear={false} direction="down" in={!trigger}>
+  const isIn = !trigger && !isAuthenticating;
 
   return (
-    <Slide appear={false} direction="down" in={!trigger}>
+    <Slide appear={false} direction="down" in={isIn}>
       {children}
     </Slide>
   );
@@ -43,6 +47,7 @@ function HideOnScroll(props) {
 export default function App() {
   const classes = useStyles();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   const netlifyAuth = {
     isAuthenticated: false,
@@ -51,16 +56,15 @@ export default function App() {
       this.isAuthenticated = true;
       netlifyIdentity.open();
       netlifyIdentity.on("login", (user) => {
-        setIsAuthenticated(true);
         this.user = user;
         callback(user);
       });
+      //callback();
     },
     signout(callback) {
       this.isAuthenticated = false;
       netlifyIdentity.logout();
       netlifyIdentity.on("logout", () => {
-        setIsAuthenticated(false);
         this.user = null;
         callback();
       });
@@ -69,21 +73,25 @@ export default function App() {
 
   const login = () => {
     console.log("login");
+    setIsAuthenticating(true);
     netlifyAuth.authenticate(() => {
-      console.log("authenticate");
+      console.log("authenticated");
+      setIsAuthenticated(true);
+      setIsAuthenticating(false);
     });
   };
   const logout = () => {
-    console.log("login");
+    console.log("logout");
     netlifyAuth.signout(() => {
-      console.log("signout");
+      console.log("signouted");
+      setIsAuthenticated(false);
     });
   };
 
   return (
     <div className="App">
       <CssBaseline />
-      <HideOnScroll {...this?.props}>
+      <HideOnScroll isAuthenticating={isAuthenticating} {...this?.props}>
         <AppBar>
           <Toolbar>
             <IconButton
@@ -110,6 +118,10 @@ export default function App() {
         </AppBar>
       </HideOnScroll>
       <Toolbar />
+      <span>{`isAuthenticating: ${isAuthenticating}`}</span>
+      <Button onClick={() => setIsAuthenticating(!isAuthenticating)}>
+        test
+      </Button>
       {isAuthenticated && (
         <div>
           <Dashboard />
