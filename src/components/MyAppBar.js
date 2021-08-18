@@ -8,6 +8,8 @@ import Slide from "@material-ui/core/Slide";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,9 +58,11 @@ export default function MyAppBar(props) {
             </Typography>
             {authenticatedUser ? (
               <React.Fragment>
-                <Typography align="right" variant="h6">
-                  {authenticatedUser.email}
-                </Typography>
+                <Tooltip title={authenticatedUser.email}>
+                  <IconButton edge="start" color="inherit" aria-label="user">
+                    <AccountCircleIcon />
+                  </IconButton>
+                </Tooltip>
                 <Button onClick={onLogout} color="inherit">
                   Logout
                 </Button>

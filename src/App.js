@@ -46,6 +46,7 @@ export default function App() {
     });
   };
 
+  netlifyIdentity.on("init", (user) => console.log("init", user));
   netlifyIdentity.on("open", () => setIsAuthenWidgetOpen(true));
   netlifyIdentity.on("close", () => setIsAuthenWidgetOpen(false));
 
