@@ -40,7 +40,6 @@ export default function MyAppBar(props) {
   });
   const isAppBarOpen = !scrollTrigger && !isAuthenWidgetOpen;
 
-  console.log(authenticatedUser);
   return (
     <React.Fragment>
       <Slide appear={false} direction="down" in={isAppBarOpen}>

@@ -8,7 +8,7 @@ import MyAppBar from "./components/MyAppBar";
 
 export default function App() {
   const [authenticatedUser, setAuthenticatedUser] = useState(
-    localStorage.getItem("gotrue.user")
+    JSON.parse(localStorage.getItem("gotrue.user"))
   );
   const [isAuthenWidgetOpen, setIsAuthenWidgetOpen] = useState(false);
 
@@ -64,9 +64,6 @@ export default function App() {
 
       {authenticatedUser && !isAuthenWidgetOpen && (
         <div>
-          {authenticatedUser}
-          {authenticatedUser.email}
-          {authenticatedUser.user_metadata}
           <Dashboard />
         </div>
       )}
