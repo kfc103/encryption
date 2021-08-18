@@ -7,26 +7,25 @@ import netlifyIdentity from "netlify-identity-widget";
 import MyAppBar from "./components/MyAppBar";
 
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authenticatedUser, setAuthenticatedUser] = useState(false);
   const [isAuthenWidgetOpen, setIsAuthenWidgetOpen] = useState(false);
 
   const netlifyAuth = {
-    isAuthenticated: false,
-    user: null,
+    //isAuthenticated: false,
+    //user: null,
     authenticate(callback) {
-      this.isAuthenticated = true;
+      //this.isAuthenticated = true;
       netlifyIdentity.open();
       netlifyIdentity.on("login", (user) => {
-        this.user = user;
+        //this.user = user;
         callback(user);
       });
     },
     signout(callback) {
-      this.isAuthenticated = false;
+      //this.isAuthenticated = false;
       netlifyIdentity.logout();
       netlifyIdentity.on("logout", () => {
-        this.user = null;
+        //this.user = null;
         callback();
       });
     }
@@ -35,17 +34,15 @@ export default function App() {
   const login = () => {
     console.log("login");
     netlifyAuth.authenticate((user) => {
-      console.log("authenticated");
+      console.log("login successfully");
       setAuthenticatedUser(user);
-      setIsAuthenticated(true);
     });
   };
   const logout = () => {
     console.log("logout");
     netlifyAuth.signout(() => {
-      console.log("signouted");
+      console.log("logout successfully");
       setAuthenticatedUser(null);
-      setIsAuthenticated(false);
     });
   };
 
@@ -63,7 +60,7 @@ export default function App() {
         {...this?.props}
       />
 
-      {authenticatedUser && (
+      {authenticatedUser && !isAuthenWidgetOpen && (
         <div>
           <Dashboard />
         </div>
