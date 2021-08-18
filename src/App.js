@@ -59,7 +59,12 @@ export default function App() {
         this.user = user;
         callback(user);
       });
-      //callback();
+      netlifyIdentity.on("open", () =>
+        console.log("authenticate: Widget opened")
+      );
+      netlifyIdentity.on("close", () =>
+        console.log("authenticate: Widget closed")
+      );
     },
     signout(callback) {
       this.isAuthenticated = false;
@@ -68,6 +73,8 @@ export default function App() {
         this.user = null;
         callback();
       });
+      netlifyIdentity.on("open", () => console.log("signout: Widget opened"));
+      netlifyIdentity.on("close", () => console.log("signout: Widget closed"));
     }
   };
 
