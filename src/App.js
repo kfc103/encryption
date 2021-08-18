@@ -7,7 +7,8 @@ import netlifyIdentity from "netlify-identity-widget";
 import MyAppBar from "./components/MyAppBar";
 
 export default function App() {
-  const [authenticatedUser, setAuthenticatedUser] = useState(false);
+  const defaultUser = localStorage.getItem("gotrue.user");
+  const [authenticatedUser, setAuthenticatedUser] = useState(defaultUser);
   const [isAuthenWidgetOpen, setIsAuthenWidgetOpen] = useState(false);
 
   const netlifyAuth = {
