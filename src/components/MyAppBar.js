@@ -39,37 +39,39 @@ export default function MyAppBar(props) {
   const isAppBarOpen = !scrollTrigger && !isAuthenWidgetOpen;
 
   return (
-    <Slide appear={false} direction="down" in={isAppBarOpen}>
-      <AppBar>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography align="left" variant="h6" className={classes.title}>
-            eSecret
-          </Typography>
-          {authenticatedUser ? (
-            <React.Fragment>
-              <Typography align="right" variant="h6">
-                {authenticatedUser.email}
-              </Typography>
-              <Button onClick={onLogout} color="inherit">
-                Logout
+    <React.Fragment>
+      <Slide appear={false} direction="down" in={isAppBarOpen}>
+        <AppBar>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="menu"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography align="left" variant="h6" className={classes.title}>
+              eSecret
+            </Typography>
+            {authenticatedUser ? (
+              <React.Fragment>
+                <Typography align="right" variant="h6">
+                  {authenticatedUser.email}
+                </Typography>
+                <Button onClick={onLogout} color="inherit">
+                  Logout
+                </Button>
+              </React.Fragment>
+            ) : (
+              <Button onClick={onLogin} color="inherit">
+                Login
               </Button>
-            </React.Fragment>
-          ) : (
-            <Button onClick={onLogin} color="inherit">
-              Login
-            </Button>
-          )}
-        </Toolbar>
-      </AppBar>
+            )}
+          </Toolbar>
+        </AppBar>
+      </Slide>
       <Toolbar />
-    </Slide>
+    </React.Fragment>
   );
 }
