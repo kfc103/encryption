@@ -8,7 +8,10 @@ import MyAppBar from "./components/MyAppBar";
 
 export default function App() {
   const [authenticatedUser, setAuthenticatedUser] = useState(
-    JSON.parse(localStorage.getItem("gotrue.user"))
+    //JSON.parse(localStorage.getItem("gotrue.user"))
+    JSON.parse(
+      '{"url":"/.netlify/identity","token":{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjkyODEzNTAsInN1YiI6IjQ0NzUzZGM2LTRlOWEtNDU4MS04ZDI1LWZmZWUwNGQ2MTUzOSIsImVtYWlsIjoia2ZjaGFuMTAzQGdtYWlsLmNvbSIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIn0sInVzZXJfbWV0YWRhdGEiOnsiZnVsbF9uYW1lIjoia2ZjaGFuMTAzIn19.DeWih_RVscoiIRxBRN8l25eQkmihEywFWGKzi_SdFII","token_type":"bearer","expires_in":3600,"refresh_token":"SNtXq7IVIQrXCVvrhfzXtg","expires_at":1629281350000},"id":"44753dc6-4e9a-4581-8d25-ffee04d61539","aud":"","role":"","email":"kfchan103@gmail.com","confirmed_at":"2021-08-13T07:31:48Z","confirmation_sent_at":"2021-08-13T07:31:15Z","app_metadata":{"provider":"email"},"user_metadata":{"full_name":"kfchan103"},"created_at":"2021-08-13T07:31:15Z","updated_at":"2021-08-13T07:31:15Z"}'
+    )
   );
   const [isAuthenWidgetOpen, setIsAuthenWidgetOpen] = useState(false);
 
@@ -64,7 +67,7 @@ export default function App() {
 
       {authenticatedUser && !isAuthenWidgetOpen && (
         <div>
-          <Dashboard />
+          <Dashboard authenticatedUser={authenticatedUser} />
         </div>
       )}
     </div>

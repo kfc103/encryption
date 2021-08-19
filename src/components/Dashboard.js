@@ -15,20 +15,21 @@ export default function Dashboard(props) {
   const [passphraseNewDialogOpen, setPassphraseNewDialogOpen] = useState(false);
   const [passphrase, setPassphrase] = useState("");
 
+  const init = async () => {
+    setBusy(true);
+    setPassphrase("");
+    setPassphraseNewDialogOpen(false);
+    setPassphraseDialogOpen(false);
+    const rows = await api.readAll();
+    if (rows.length === 0) setPassphraseNewDialogOpen(true);
+    else setPassphraseDialogOpen(true);
+    setRows(rows);
+    setBusy(false);
+  };
+
   useEffect(() => {
-    async function init() {
-      setBusy(true);
-      setPassphrase("");
-      setPassphraseNewDialogOpen(false);
-      setPassphraseDialogOpen(false);
-      const rows = await api.readAll();
-      if (rows.length === 0) setPassphraseNewDialogOpen(true);
-      else setPassphraseDialogOpen(true);
-      setRows(rows);
-      setBusy(false);
-    }
     init();
-  }, []);
+  }, [props.authenticatedUser]);
 
   const saveItem = (item) => {
     console.log("saveItem");

@@ -128,14 +128,13 @@ const SecretInfoDialog = ({ open, passphrase, item, action }) => {
             <Controller
               name="password"
               control={control}
-              defaultValue={decrypt(item.password, passphrase)}
+              defaultValue={decrypt(item.password, passphrase, true)}
               shouldUnregister={true}
               render={({ field, fieldState }) => (
                 <TextField
                   disabled
                   fullWidth
                   label="Password"
-                  type="password"
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">

@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+// /import { useState, useCallback } from "react";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -35,11 +35,10 @@ export default function SecretTable(props) {
   const { editSecretInfo } = useSecretInfoDialog();
 
   const addBtnHandler = async () => {
-    const edited = await editSecretInfo({
+    await editSecretInfo({
       passphrase: props.passphrase,
       saveItem: props.saveItem
     });
-    console.log(edited);
   };
 
   return (
@@ -50,17 +49,12 @@ export default function SecretTable(props) {
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Login</TableCell>
-              <TableCell align="right"></TableCell>
+              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {props.rows.map((row) => (
-              <SecretTableRow
-                key={row.id}
-                row={row}
-                passphrase={props.passphrase}
-                deleteItem={props.deleteItem}
-              />
+              <SecretTableRow key={row.id} row={row} {...props} />
             ))}
           </TableBody>
         </Table>
