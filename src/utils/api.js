@@ -1,12 +1,12 @@
 /* Api methods to call /functions */
 
-const readAll = () => {
+const readAll = (user) => {
   /*return fetch(
     "https://goofy-elion-2b3cba.netlify.app/.netlify/functions/encrypt-read-all"
   ).then((response) => {
     return response.json();
   });*/
-  console.log("readAll");
+  console.log("readAll " + user.email);
   const myPromise = new Promise((resolve, reject) => {
     console.log("readAll resolve");
     setTimeout(() => {

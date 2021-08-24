@@ -9,7 +9,12 @@ export function encrypt(message, passphrase) {
 export function decrypt(ciphertext, passphrase, isOutputMasked) {
   // Decrypt
   const decrypted = CryptoJS.AES.decrypt(ciphertext, passphrase);
-  const originalText = decrypted.toString(CryptoJS.enc.Utf8);
+  let originalText;
+  try {
+    originalText = decrypted.toString(CryptoJS.enc.Utf8);
+  } catch {
+    originalText = "";
+  }
 
   if (isOutputMasked) {
     const length = originalText.length;
