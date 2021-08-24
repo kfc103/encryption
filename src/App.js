@@ -53,6 +53,7 @@ export default function App() {
 
   netlifyIdentity.on("open", () => setIsAuthenWidgetOpen(true));
   netlifyIdentity.on("close", () => setIsAuthenWidgetOpen(false));
+  netlifyIdentity.on("error", (err) => console.error("Error", err));
 
   return (
     <div className="App">

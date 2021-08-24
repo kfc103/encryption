@@ -1,12 +1,12 @@
+import React, { useCallback } from "react";
 import { useState, useEffect } from "react";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import PassphraseDialog from "./PassphraseDialog";
 import PassphraseNewDialog from "./PassphraseNewDialog";
+
+import { usePassphrase } from "./Passphrase";
 import SecretTable from "./SecretTable";
 import api from "../utils/api";
-import { ConfirmationDialogProvider } from "./ConfirmationDialog";
-import { SecretInfoDialogProvider } from "./SecretInfoDialog";
-import { MySnackbarProvider } from "./MySnackbar";
 
 export default function Dashboard(props) {
   const [rows, setRows] = useState([]);
@@ -14,21 +14,31 @@ export default function Dashboard(props) {
   const [passphraseDialogOpen, setPassphraseDialogOpen] = useState(false);
   const [passphraseNewDialogOpen, setPassphraseNewDialogOpen] = useState(false);
   const [passphrase, setPassphrase] = useState("");
+  const { getPassphrase, Passphrase } = usePassphrase();
 
-  const init = async () => {
+  const init = async (user) => {
     setBusy(true);
     setPassphrase("");
     setPassphraseNewDialogOpen(false);
     setPassphraseDialogOpen(false);
-    const rows = await api.readAll();
+    const rows = await api.readAll(user);
     if (rows.length === 0) setPassphraseNewDialogOpen(true);
-    else setPassphraseDialogOpen(true);
+    //else setPassphraseDialogOpen(true);
+    else {
+      const passphrase = await getPassphrase({
+        isCancelable: false,
+        ciphertextList: rows.map((item) => {
+          return item.password;
+        })
+      });
+      setPassphrase(passphrase);
+    }
     setRows(rows);
     setBusy(false);
   };
 
   useEffect(() => {
-    init();
+    init(props.authenticatedUser);
   }, [props.authenticatedUser]);
 
   const saveItem = (item) => {
@@ -76,37 +86,24 @@ export default function Dashboard(props) {
     return myPromise;
   };
 
-  if (busy) return <LinearProgress />;
+  if (busy)
+    return (
+      <React.Fragment>
+        <LinearProgress />
+        <Passphrase />
+      </React.Fragment>
+    );
   else
     return (
-      <ConfirmationDialogProvider>
-        <MySnackbarProvider>
-          <SecretInfoDialogProvider>
-            {passphrase && (
-              <SecretTable
-                rows={rows}
-                passphrase={passphrase}
-                saveItem={saveItem}
-                deleteItem={deleteItem}
-              />
-            )}
-            <PassphraseDialog
-              open={passphraseDialogOpen}
-              setOpen={setPassphraseDialogOpen}
-              isCancelable={false}
-              ciphertextList={rows.map((item) => {
-                return item.password;
-              })}
-              setPassphrase={setPassphrase}
-            />
-            <PassphraseNewDialog
-              open={passphraseNewDialogOpen}
-              setOpen={setPassphraseNewDialogOpen}
-              isCancelable={false}
-              setPassphrase={setPassphrase}
-            />
-          </SecretInfoDialogProvider>
-        </MySnackbarProvider>
-      </ConfirmationDialogProvider>
+      <React.Fragment>
+        {passphrase && (
+          <SecretTable
+            rows={rows}
+            passphrase={passphrase}
+            saveItem={saveItem}
+            deleteItem={deleteItem}
+          />
+        )}
+      </React.Fragment>
     );
 }

@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => {
 
 export default function SecretTable(props) {
   const classes = useStyles();
-  const { editSecretInfo } = useSecretInfoDialog();
+  const { SecretInfoDialog, editSecretInfo } = useSecretInfoDialog();
 
   const addBtnHandler = async () => {
     await editSecretInfo({
@@ -43,6 +43,7 @@ export default function SecretTable(props) {
 
   return (
     <React.Fragment>
+      <SecretInfoDialog />
       <TableContainer component={Paper}>
         <Table aria-label="table">
           <TableHead>

@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
@@ -8,7 +7,7 @@ import TableRow from "@material-ui/core/TableRow";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import { useConfirmationDialog } from "./ConfirmationDialog";
+import { useConfirmDialog } from "./ConfirmDialog";
 import { decrypt } from "../utils/Dencryptor";
 import { useSecretInfoDialog } from "./SecretInfoDialog";
 import { useMySnackbar } from "./MySnackbar";
@@ -22,11 +21,11 @@ const useRowStyles = makeStyles({
 });
 
 export default function SecretTableRow(props) {
-  const { getConfirmation } = useConfirmationDialog();
-  const { showMySnackbar } = useMySnackbar();
+  const { ConfirmDialog, getConfirmation } = useConfirmDialog();
+  const { MySnackbar, showMySnackbar } = useMySnackbar();
   const { row, passphrase, deleteItem } = props;
   const classes = useRowStyles();
-  const { editSecretInfo } = useSecretInfoDialog();
+  const { SecretInfoDialog, editSecretInfo } = useSecretInfoDialog();
 
   const onDecryptBtnClick = (e) => {
     e.stopPropagation();
@@ -38,7 +37,6 @@ export default function SecretTableRow(props) {
         message: "Password has been decrypted to clipboard",
         duration: 1000
       });
-      console.log("Password has been decrypted to clipboard");
     }
   };
 
@@ -64,6 +62,9 @@ export default function SecretTableRow(props) {
 
   return (
     <React.Fragment>
+      <ConfirmDialog />
+      <MySnackbar />
+      <SecretInfoDialog />
       <TableRow hover className={classes.root}>
         <TableCell>{row.name}</TableCell>
         <TableCell>{row.login}</TableCell>
