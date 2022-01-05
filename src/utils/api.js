@@ -8,7 +8,8 @@ const readAll = (user) => {
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      //console.log(data);
+      for (let item of data) console.log(item.data);
     })
     .catch(console.error);
 
