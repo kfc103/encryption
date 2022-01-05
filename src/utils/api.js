@@ -7,7 +7,7 @@ const readAll = (user) => {
     "https://esecret.netlify.app/.netlify/functions/encrypt-read-all"
   ).then((response) => {
     const r = response.json();
-    console.log(r.result);
+    console.log(r);
     return response.json();
   });
 
