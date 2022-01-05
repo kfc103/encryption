@@ -10,8 +10,8 @@ const readAll = (user) => {
       .then((response) => response.json())
       .then((data) => {
         //console.log(data);
-        const arr = [],
-          i = 0;
+        const arr = [];
+        let i = 0;
         for (let item of data) arr[i++] = item.data;
         resolve(arr);
       })
