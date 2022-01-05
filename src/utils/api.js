@@ -2,16 +2,22 @@
 
 const readAll = (user) => {
   console.log("readAll");
-  return fetch(
-    //"https://goofy-elion-2b3cba.netlify.app/.netlify/functions/encrypt-read-all"
-    "https://esecret.netlify.app/.netlify/functions/encrypt-read-all"
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      //console.log(data);
-      for (let item of data) console.log(item.data);
-    })
-    .catch(console.error);
+  const myPromise = new Promise((resolve, reject) => {
+    fetch(
+      //"https://goofy-elion-2b3cba.netlify.app/.netlify/functions/encrypt-read-all"
+      "https://esecret.netlify.app/.netlify/functions/encrypt-read-all"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        //console.log(data);
+        const arr = [],
+          i = 0;
+        for (let item of data) arr[i++] = item.data;
+        resolve(arr);
+      })
+      .catch(console.error);
+  });
+  return myPromise;
 
   /*console.log("readAll " + user.email);
   const myPromise = new Promise((resolve, reject) => {
