@@ -5,11 +5,12 @@ const readAll = (user) => {
   return fetch(
     //"https://goofy-elion-2b3cba.netlify.app/.netlify/functions/encrypt-read-all"
     "https://esecret.netlify.app/.netlify/functions/encrypt-read-all"
-  ).then((response) => {
-    console.log(response.json());
-
-    return response.json();
-  });
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+    })
+    .catch(console.error);
 
   /*console.log("readAll " + user.email);
   const myPromise = new Promise((resolve, reject) => {
