@@ -6,8 +6,8 @@ const readAll = (user) => {
     //"https://goofy-elion-2b3cba.netlify.app/.netlify/functions/encrypt-read-all"
     "https://esecret.netlify.app/.netlify/functions/encrypt-read-all"
   ).then((response) => {
-    const r = response.json();
-    console.log(r);
+    console.log(response.json());
+
     return response.json();
   });
 
