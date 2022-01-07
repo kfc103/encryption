@@ -44,7 +44,9 @@ export default function Dashboard(props) {
 
   const saveItem = (item) => {
     console.log("saveItem");
+
     const myPromise = new Promise((resolve, reject) => {
+      api.insert();
       setTimeout(() => {
         const newRows = [...rows];
         const index = rows.findIndex((row) => {

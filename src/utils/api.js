@@ -64,7 +64,29 @@ const read = (id) => {
   return myPromise;
 };
 
+const insert = (data) => {
+  const myPromise = () => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_id: "44753dc6-4e9a-4581-8d25-ffee04d61539",
+        name: "Facebook1",
+        login: "1fb.test@test.com",
+        password: "U2FsdGVkX1/ILkcmUOX6hQcS97/dpmRpKNw3c0jFUbw="
+      })
+    };
+    fetch(
+      "https://esecret.netlify.app/.netlify/functions/encrypt-insert",
+      requestOptions
+    ).then((response) => response.json());
+    //.then((data) => this.setState({ postId: data.id }))
+  };
+  return myPromise;
+};
+
 export default {
   readAll: readAll,
-  read: read
+  read: read,
+  insert: insert
 };
