@@ -88,7 +88,7 @@ const insert = (data) => {
       })
       .then((data) => console.log(data));
     console.log("insert-fetched");
-  };
+  });
   return myPromise;
 };
 
