@@ -66,7 +66,7 @@ const read = (id) => {
 
 const insert = (data) => {
   console.log("insert");
-  const myPromise = () => {
+  const myPromise = new Promise((resolve, reject) => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -77,14 +77,17 @@ const insert = (data) => {
         password: "U2FsdGVkX1/ILkcmUOX6hQcS97/dpmRpKNw3c0jFUbw="
       })
     };
+    console.log("insert-fetch");
     fetch(
       "https://esecret.netlify.app/.netlify/functions/encrypt-insert",
       requestOptions
-    ).then((response) => {
-      console.log(response.json());
-      response.json();
-    });
-    //.then((data) => this.setState({ postId: data.id }))
+    )
+      .then((response) => {
+        console.log(response.json());
+        response.json();
+      })
+      .then((data) => console.log(data));
+    console.log("insert-fetched");
   };
   return myPromise;
 };
