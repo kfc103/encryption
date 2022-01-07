@@ -65,6 +65,7 @@ const read = (id) => {
 };
 
 const insert = (data) => {
+  console.log("insert");
   const myPromise = () => {
     const requestOptions = {
       method: "POST",
@@ -79,7 +80,10 @@ const insert = (data) => {
     fetch(
       "https://esecret.netlify.app/.netlify/functions/encrypt-insert",
       requestOptions
-    ).then((response) => response.json());
+    ).then((response) => {
+      console.log(response.json());
+      response.json();
+    });
     //.then((data) => this.setState({ postId: data.id }))
   };
   return myPromise;
