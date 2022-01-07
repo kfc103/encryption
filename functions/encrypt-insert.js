@@ -1,5 +1,3 @@
-const querystring = require("querystring");
-
 exports.handler = async (event, context) => {
   // Only allow POST
   if (event.httpMethod !== "POST") {
@@ -12,7 +10,7 @@ exports.handler = async (event, context) => {
   console.log(event.body);
   console.log(JSON.parse(event.body));
 
-  const params = querystring.parse(event.body);
+  const params = JSON.parse(event.body);
   const name = params.name || "World";
 
   return {
