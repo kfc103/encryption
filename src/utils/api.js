@@ -53,12 +53,13 @@ const read = (id) => {
   });*/
 
   const myPromise = new Promise((resolve, reject) => {
+    console.log(id);
     fetch(
       `https://esecret.netlify.app/.netlify/functions/encrypt-read-all/${id}`
     )
       .then((response) => response.json())
       .then((data) => {
-        //console.log(data);
+        console.log(data);
         const arr = [];
         let i = 0;
         for (let item of data) arr[i++] = item.data;
