@@ -21,7 +21,8 @@ export default function Dashboard(props) {
     setPassphrase("");
     setPassphraseNewDialogOpen(false);
     setPassphraseDialogOpen(false);
-    const rows = await api.readAll(user);
+    //const rows = await api.readAll(user);
+    const rows = await api.read(user.id);
     if (rows.length === 0) setPassphraseNewDialogOpen(true);
     //else setPassphraseDialogOpen(true);
     else {
