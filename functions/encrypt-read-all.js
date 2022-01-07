@@ -1,6 +1,6 @@
 /* Import faunaDB sdk */
 const faunadb = require("faunadb");
-const getId = require("./utils/getId");
+//const getId = require("./utils/getId");
 const q = faunadb.query;
 
 exports.handler = (event, context) => {
@@ -8,7 +8,7 @@ exports.handler = (event, context) => {
   const client = new faunadb.Client({
     secret: process.env.FAUNADB_SERVER_SECRET
   });
-  const id = getId(event.path);
+  //const id = getId(event.path);
   console.log(`Function 'encrpyt-readAll' invoked.`);
   return (
     client

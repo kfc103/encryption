@@ -64,9 +64,9 @@ export default function App() {
         const token = authenticatedUser.token;
         const now = Date.now();
         //this.signOut();
-        console.log(token.expires_at);
-        console.log(now);
-        console.log(intervalId);
+        //console.log(token.expires_at);
+        //console.log(now);
+        //console.log(intervalId);
         if (now >= token.expires_at) {
           console.log("Expired");
           logout();

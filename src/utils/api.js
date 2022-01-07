@@ -3,10 +3,7 @@
 const readAll = (user) => {
   console.log("readAll");
   const myPromise = new Promise((resolve, reject) => {
-    fetch(
-      //"https://goofy-elion-2b3cba.netlify.app/.netlify/functions/encrypt-read-all"
-      "https://esecret.netlify.app/.netlify/functions/encrypt-read-all"
-    )
+    fetch("https://esecret.netlify.app/.netlify/functions/encrypt-read-all")
       .then((response) => response.json())
       .then((data) => {
         //console.log(data);
@@ -46,18 +43,17 @@ const readAll = (user) => {
 
 const read = (id) => {
   /*return fetch(
-    //`https://goofy-elion-2b3cba.netlify.app/.netlify/functions/encrypt-read/${id}`
     `https://esecret.netlify.app/.netlify/functions/encrypt-read-all/${id}`
   ).then((response) => {
     return response.json();
   });*/
 
   const myPromise = new Promise((resolve, reject) => {
-    console.log(id);
+    //console.log(id);
     fetch(`https://esecret.netlify.app/.netlify/functions/encrypt-read/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         const arr = [];
         let i = 0;
         for (let item of data) arr[i++] = item.data;
