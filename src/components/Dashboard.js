@@ -50,30 +50,35 @@ export default function Dashboard(props) {
 
     const myPromise = new Promise((resolve, reject) => {
       //await api.insert();
-      setTimeout(() => {
-        const newRows = [...rows];
-        const index = rows.findIndex((row) => {
-          return row.ref === item.ref;
+      //setTimeout(() => {
+      const newRows = [...rows];
+      const index = rows.findIndex((row) => {
+        return row.ref === item.ref;
+      });
+
+      //console.log(index);
+      if (index !== -1) {
+        // update item
+
+        const updated = api.update(item.ref["@ref"].id, item.data);
+        updated.then((data) => {
+          newRows[index] = data;
+          setRows(newRows);
+
+          console.log("saveItem resolved");
+          resolve();
         });
-
-        //console.log(index);
-        if (index !== -1) {
-          // update item
-
-          const updated = api.update(item.ref["@ref"].id, item.data);
-          updated.then((data) => console.log(data));
-
-          newRows[index] = item;
-        } else {
-          // create item
-          item.id = newRows.length + 1;
-          newRows.push(item);
-        }
+      } else {
+        // create item
+        item.id = newRows.length + 1;
+        newRows.push(item);
         setRows(newRows);
 
         console.log("saveItem resolved");
         resolve();
-      }, 100);
+      }
+
+      //}, 100);
     });
     return myPromise;
   };
