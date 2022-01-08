@@ -169,16 +169,14 @@ const insert = (data) => {
   return myPromise;
 };
 
-const update = (docId, data) => {
+const update = async (docId, data) => {
   //return new Promise((resolve, reject) => {
   return fetch(`/.netlify/functions/encrypt-update/${docId}`, {
     body: JSON.stringify(data),
     method: "POST"
-  })
-    .then((response) => {
-      response.json();
-    })
-    .then((data) => data);
+  }).then((response) => {
+    return response.json();
+  });
   //});
 };
 

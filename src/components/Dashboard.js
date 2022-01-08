@@ -59,6 +59,7 @@ export default function Dashboard(props) {
         //console.log(index);
         if (index !== -1) {
           // update item
+
           const updated = api.update(item.ref["@ref"].id, item.data);
           updated.then((data) => console.log(data));
 
