@@ -51,7 +51,10 @@ const read = (id) => {
   const myPromise = new Promise((resolve, reject) => {
     //console.log(id);
     fetch(`https://esecret.netlify.app/.netlify/functions/encrypt-read/${id}`)
-      .then((response) => response.json())
+      .then((response) => {
+        console.log(response.json());
+        response.json();
+      })
       .then((data) => {
         //console.log(data);
         const arr = [];
