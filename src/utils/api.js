@@ -170,14 +170,16 @@ const insert = (data) => {
 };
 
 const update = (docId, data) => {
-  return fetch(`/.netlify/functions/encrypt-update/${docId}`, {
-    body: JSON.stringify(data),
-    method: "POST"
-  })
-    .then((response) => {
-      response.json();
+  return new Promise((resolve, reject) => {
+    fetch(`/.netlify/functions/encrypt-update/${docId}`, {
+      body: JSON.stringify(data),
+      method: "POST"
     })
-    .then((data) => data);
+      .then((response) => {
+        response.json();
+      })
+      .then((data) => resolve(data));
+  });
 };
 
 export default {
