@@ -59,7 +59,7 @@ export default function Dashboard(props) {
         console.log(index);
         if (index !== -1) {
           // update item
-          api.update();
+          api.update(item.ref["@ref"].id, item);
           newRows[index] = item;
         } else {
           // create item
