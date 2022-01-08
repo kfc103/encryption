@@ -42,13 +42,13 @@ const readAll = (user) => {
 };
 
 const read = (id) => {
-  /*return fetch(
-    `https://esecret.netlify.app/.netlify/functions/encrypt-read-all/${id}`
+  return fetch(
+    `https://esecret.netlify.app/.netlify/functions/encrypt-read/${id}`
   ).then((response) => {
     return response.json();
-  });*/
+  });
 
-  const myPromise = new Promise((resolve, reject) => {
+  /*const myPromise = new Promise((resolve, reject) => {
     //console.log(id);
     fetch(`https://esecret.netlify.app/.netlify/functions/encrypt-read/${id}`)
       .then((response) => {
@@ -64,7 +64,7 @@ const read = (id) => {
       })
       .catch(console.error);
   });
-  return myPromise;
+  return myPromise;*/
 };
 
 const insert = (data) => {
