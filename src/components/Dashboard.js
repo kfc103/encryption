@@ -60,7 +60,8 @@ export default function Dashboard(props) {
         if (index !== -1) {
           // update item
           const updated = api.update(item.ref["@ref"].id, item.data);
-          console.log(updated);
+          updated.then((data) => console.log(data));
+
           newRows[index] = item;
         } else {
           // create item
