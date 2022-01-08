@@ -173,9 +173,11 @@ const update = (docId, data) => {
   return fetch(`/.netlify/functions/encrypt-update/${docId}`, {
     body: JSON.stringify(data),
     method: "POST"
-  }).then((response) => {
-    return response.json();
-  });
+  })
+    .then((response) => {
+      response.json();
+    })
+    .then((data) => data);
 };
 
 export default {
