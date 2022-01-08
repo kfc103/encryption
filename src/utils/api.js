@@ -181,5 +181,6 @@ const update = (docId, data) => {
 export default {
   readAll: readAll,
   read: read,
-  insert: insert
+  insert: insert,
+  update: update
 };
