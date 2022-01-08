@@ -29,7 +29,7 @@ export default function SecretTableRow(props) {
 
   const onDecryptBtnClick = (e) => {
     e.stopPropagation();
-    const ciphertext = row.password;
+    const ciphertext = row.data.password;
     const decrypted = decrypt(ciphertext, passphrase);
     if (decrypted) {
       navigator.clipboard.writeText(decrypted);
@@ -44,7 +44,8 @@ export default function SecretTableRow(props) {
     e.stopPropagation();
     const confirmed = await getConfirmation({
       title: "Attention!",
-      message: "Confirm to delete [" + row.name + "|" + row.login + "] ?"
+      message:
+        "Confirm to delete [" + row.data.name + "|" + row.data.login + "] ?"
     });
     if (confirmed) deleteItem(row);
   };
@@ -66,8 +67,8 @@ export default function SecretTableRow(props) {
       <MySnackbar />
       <SecretInfoDialog />
       <TableRow hover className={classes.root}>
-        <TableCell>{row.name}</TableCell>
-        <TableCell>{row.login}</TableCell>
+        <TableCell>{row.data.name}</TableCell>
+        <TableCell>{row.data.login}</TableCell>
         <TableCell align="right">
           <IconButton
             aria-label="expand row"

@@ -93,7 +93,9 @@ const useSecretInfoDialog = () => {
           //console.log(item);
           //console.log(data);
 
-          const newItem = Object.assign({}, dialogConfig.item, data);
+          const newItem = Object.assign({}, dialogConfig.item, {
+            data: Object.assign({}, dialogConfig.item.data, data)
+          });
 
           //-------------------------------
           // perform save
@@ -108,7 +110,7 @@ const useSecretInfoDialog = () => {
 
     const onDecryptBtnClick = (e) => {
       e.stopPropagation();
-      const ciphertext = dialogConfig.item.password;
+      const ciphertext = dialogConfig.item.data.password;
       const decrypted = decrypt(ciphertext, dialogConfig.passphrase);
       if (decrypted) {
         navigator.clipboard.writeText(decrypted);
@@ -125,13 +127,13 @@ const useSecretInfoDialog = () => {
         <MySnackbar />
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogTitle id="form-dialog-title">
-            {dialogConfig.item?.id ? "Edit Secret" : "Create Secret"}
+            {dialogConfig.item?.data.id ? "Edit Secret" : "Create Secret"}
           </DialogTitle>
           <DialogContent>
             <Controller
               name="name"
               control={control}
-              defaultValue={dialogConfig.item?.name}
+              defaultValue={dialogConfig.item?.data.name}
               shouldUnregister={true}
               rules={{
                 maxLength: { value: 20, message: "Max length is 20" }
@@ -149,7 +151,7 @@ const useSecretInfoDialog = () => {
             <Controller
               name="login"
               control={control}
-              defaultValue={dialogConfig.item?.login}
+              defaultValue={dialogConfig.item?.data.login}
               shouldUnregister={true}
               rules={{
                 required: true,
@@ -166,12 +168,12 @@ const useSecretInfoDialog = () => {
                 />
               )}
             />
-            {dialogConfig.item?.password && (
+            {dialogConfig.item?.data.password && (
               <Controller
                 name="password"
                 control={control}
                 defaultValue={decrypt(
-                  dialogConfig.item.password,
+                  dialogConfig.item.data.password,
                   dialogConfig.passphrase,
                   true
                 )}
@@ -204,12 +206,12 @@ const useSecretInfoDialog = () => {
               control={control}
               shouldUnregister={true}
               rules={{
-                required: !dialogConfig.item?.password
+                required: !dialogConfig.item?.data.password
               }}
               render={({ field, fieldState }) => (
                 <TextField
                   fullWidth
-                  required={!dialogConfig.item?.password}
+                  required={!dialogConfig.item?.data.password}
                   label="New Password"
                   type="password"
                   helperText={fieldState.error?.message}
@@ -223,12 +225,12 @@ const useSecretInfoDialog = () => {
               control={control}
               shouldUnregister={true}
               rules={{
-                required: !dialogConfig.item?.password
+                required: !dialogConfig.item?.data.password
               }}
               render={({ field, fieldState }) => (
                 <TextField
                   fullWidth
-                  required={!dialogConfig.item?.password}
+                  required={!dialogConfig.item?.data.password}
                   label="Confirm New Password"
                   type="password"
                   helperText={fieldState.error?.message}

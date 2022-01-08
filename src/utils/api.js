@@ -42,12 +42,86 @@ const readAll = (user) => {
 };
 
 const read = (id) => {
-  return fetch(
+  /*return fetch(
     `https://esecret.netlify.app/.netlify/functions/encrypt-read/${id}`
   ).then((response) => {
     return response.json();
-  });
+  });*/
 
+  return [
+    {
+      ref: {
+        "@ref": {
+          id: "320058835581534795",
+          collection: {
+            "@ref": {
+              id: "passwords",
+              collection: {
+                "@ref": {
+                  id: "collections"
+                }
+              }
+            }
+          }
+        }
+      },
+      ts: 1641490741658000,
+      data: {
+        user_id: "44753dc6-4e9a-4581-8d25-ffee04d61539",
+        name: "twitter",
+        login: "2122@test.com",
+        password: "U2FsdGVkX1/ILkcmUOX6hQcS97/dpmRpKNw3c0jFUbw="
+      }
+    },
+    {
+      ref: {
+        "@ref": {
+          id: "320118198171075147",
+          collection: {
+            "@ref": {
+              id: "passwords",
+              collection: {
+                "@ref": {
+                  id: "collections"
+                }
+              }
+            }
+          }
+        }
+      },
+      ts: 1641547353815000,
+      data: {
+        user_id: "44753dc6-4e9a-4581-8d25-ffee04d61539",
+        name: "Facebook",
+        login: "fb.test@test.com",
+        password: "U2FsdGVkX1/ILkcmUOX6hQcS97/dpmRpKNw3c0jFUbw="
+      }
+    },
+    {
+      ref: {
+        "@ref": {
+          id: "320139285350056529",
+          collection: {
+            "@ref": {
+              id: "passwords",
+              collection: {
+                "@ref": {
+                  id: "collections"
+                }
+              }
+            }
+          }
+        }
+      },
+      ts: 1641567464115000,
+      data: {
+        user_id: "44753dc6-4e9a-4581-8d25-ffee04d61539",
+        name: "Facebook1",
+        login: "1fb.test@test.com",
+        password: "U2FsdGVkX1/ILkcmUOX6hQcS97/dpmRpKNw3c0jFUbw="
+      }
+    }
+  ];
   /*const myPromise = new Promise((resolve, reject) => {
     //console.log(id);
     fetch(`https://esecret.netlify.app/.netlify/functions/encrypt-read/${id}`)
@@ -93,6 +167,15 @@ const insert = (data) => {
     console.log("insert-fetched");
   });
   return myPromise;
+};
+
+const update = (docId, data) => {
+  return fetch(`/.netlify/functions/encrypt-update/${docId}`, {
+    body: JSON.stringify(data),
+    method: "POST"
+  }).then((response) => {
+    return response.json();
+  });
 };
 
 export default {

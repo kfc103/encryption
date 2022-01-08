@@ -31,7 +31,7 @@ export default function Dashboard(props) {
       const passphrase = await getPassphrase({
         isCancelable: false,
         ciphertextList: rows.map((item) => {
-          return item.password;
+          return item.data.password;
         })
       });
       setPassphrase(passphrase);
@@ -46,14 +46,17 @@ export default function Dashboard(props) {
 
   const saveItem = (item) => {
     console.log("saveItem");
+    console.log(item);
 
     const myPromise = new Promise((resolve, reject) => {
       //await api.insert();
       setTimeout(() => {
         const newRows = [...rows];
         const index = rows.findIndex((row) => {
-          return row.id === item.id;
+          return row.ref === item.ref;
         });
+
+        console.log(index);
         if (index !== -1) {
           // update item
           newRows[index] = item;
