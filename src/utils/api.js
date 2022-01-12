@@ -42,13 +42,13 @@ const readAll = (user) => {
 };
 
 const read = (id) => {
-  /*return fetch(
+  return fetch(
     `https://esecret.netlify.app/.netlify/functions/encrypt-read/${id}`
   ).then((response) => {
     return response.json();
-  });*/
+  });
 
-  return [
+  /*return [
     {
       ref: {
         "@ref": {
@@ -121,7 +121,7 @@ const read = (id) => {
         password: "U2FsdGVkX1/ILkcmUOX6hQcS97/dpmRpKNw3c0jFUbw="
       }
     }
-  ];
+  ];*/
   /*const myPromise = new Promise((resolve, reject) => {
     //console.log(id);
     fetch(`https://esecret.netlify.app/.netlify/functions/encrypt-read/${id}`)

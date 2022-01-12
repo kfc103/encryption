@@ -44,7 +44,7 @@ export default function Dashboard(props) {
     init(props.authenticatedUser);
   }, [props.authenticatedUser]);
 
-  const saveItem = (item) => {
+  /*const saveItem = (item) => {
     console.log("saveItem");
     console.log(item);
 
@@ -81,6 +81,36 @@ export default function Dashboard(props) {
       //}, 100);
     });
     return myPromise;
+  };*/
+  const saveItem = async (item) => {
+    console.log("saveItem");
+    console.log(item);
+
+    const newRows = [...rows];
+    const index = rows.findIndex((row) => {
+      return row.ref === item.ref;
+    });
+
+    //console.log(index);
+    if (index !== -1) {
+      // update item
+
+      const data = await api.update(item.ref["@ref"].id, item.data);
+      console.log(data);
+
+      //newRows[index] = data;
+      //setRows(newRows);
+
+      console.log("saveItem resolved");
+    } else {
+      // create item
+      item.id = newRows.length + 1;
+      newRows.push(item);
+      setRows(newRows);
+
+      console.log("saveItem resolved");
+      //resolve();
+    }
   };
 
   const deleteItem = (item) => {
