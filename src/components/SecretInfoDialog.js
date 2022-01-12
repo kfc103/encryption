@@ -90,15 +90,19 @@ const useSecretInfoDialog = () => {
           delete data.newPassword;
           delete data.newPasswordCfm;
 
-          console.log(dialogConfig.item);
+          console.log(dialogConfig);
           console.log(data);
 
-          const newItem = Object.assign({}, dialogConfig.item, {
-            data: Object.assign({}, dialogConfig.item.data, data)
-          });
+          let newItem;
+          if (dialogConfig.item)
+            newItem = Object.assign({}, dialogConfig.item, {
+              data: Object.assign({}, dialogConfig.item.data, data)
+            });
+          else newItem = Object.assign({}, data);
 
           //-------------------------------
           // perform save
+          console.log(newItem);
           if (newItem) await dialogConfig.saveItem(newItem);
           //-------------------------------
 
