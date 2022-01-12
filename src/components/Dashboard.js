@@ -98,8 +98,8 @@ export default function Dashboard(props) {
       const data = await api.update(item.ref["@ref"].id, item.data);
       console.log(data);
 
-      //newRows[index] = data;
-      //setRows(newRows);
+      newRows[index] = data;
+      setRows(newRows);
 
       console.log("saveItem resolved");
     } else {
