@@ -98,7 +98,7 @@ const useSecretInfoDialog = () => {
             newItem = Object.assign({}, dialogConfig.item, {
               data: Object.assign({}, dialogConfig.item.data, data)
             });
-          else newItem = Object.assign({}, data);
+          else newItem = Object.assign({}, { data: data });
 
           //-------------------------------
           // perform save
