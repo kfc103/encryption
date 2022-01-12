@@ -84,24 +84,19 @@ export default function Dashboard(props) {
   };*/
   const saveItem = async (item) => {
     console.log("saveItem");
-    console.log(item);
 
     const newRows = [...rows];
     const index = rows.findIndex((row) => {
       return row.ref === item.ref;
     });
 
-    //console.log(index);
     if (index !== -1) {
       // update item
-
-      const data = await api.update(item.ref["@ref"].id, item.data);
-      console.log(data);
-
-      newRows[index] = data;
+      console.log("api.update");
+      const updated = await api.update(item.ref["@ref"].id, item.data);
+      console.log(updated);
+      newRows[index] = updated;
       setRows(newRows);
-
-      console.log("saveItem resolved");
     } else {
       // create item
       item.id = newRows.length + 1;
