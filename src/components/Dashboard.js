@@ -92,18 +92,16 @@ export default function Dashboard(props) {
 
     if (index !== -1) {
       // update item
-      console.log("api.update");
       const updated = await api.update(item.ref["@ref"].id, item.data);
-      console.log(updated);
       newRows[index] = updated;
       setRows(newRows);
     } else {
       // create item
-      item.id = newRows.length + 1;
-      newRows.push(item);
+      const inserted = await api.insert(item.data);
+      newRows.push(inserted);
       setRows(newRows);
 
-      console.log("saveItem resolved");
+      //console.log("saveItem resolved");
       //resolve();
     }
   };

@@ -50,7 +50,16 @@ const read = (id) => {
 };
 
 const insert = (data) => {
-  console.log("insert");
+  return fetch(
+    "https://esecret.netlify.app/.netlify/functions/encrypt-insert",
+    {
+      body: JSON.stringify(data),
+      method: "POST"
+    }
+  ).then((response) => {
+    return response.json();
+  });
+  /*console.log("insert");
   const myPromise = new Promise((resolve, reject) => {
     const requestOptions = {
       method: "POST",
@@ -74,7 +83,7 @@ const insert = (data) => {
       .then((data) => console.log(data));
     console.log("insert-fetched");
   });
-  return myPromise;
+  return myPromise;*/
 };
 
 const update = (docId, data) => {
