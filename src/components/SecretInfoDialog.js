@@ -101,9 +101,6 @@ const useSecretInfoDialog = () => {
           //console.log(dialogConfig);
           //console.log(data);
 
-          resetDialog();
-          dialogConfig.actionCallback(true);
-
           let newItem;
           if (dialogConfig.item)
             newItem = Object.assign({}, dialogConfig.item, {
@@ -118,8 +115,11 @@ const useSecretInfoDialog = () => {
           //-------------------------------
           // perform save
           //console.log(newItem);
-          if (newItem) await dialogConfig.saveItem(newItem);
+          if (newItem) dialogConfig.saveItem(newItem);
           //-------------------------------
+
+          resetDialog();
+          dialogConfig.actionCallback(true);
         }
       }
     };
