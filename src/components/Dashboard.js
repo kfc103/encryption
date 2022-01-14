@@ -1,8 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import LinearProgress from "@material-ui/core/LinearProgress";
-//import PassphraseDialog from "./PassphraseDialog";
-//import PassphraseNewDialog from "./PassphraseNewDialog";
 
 import { usePassphrase } from "./Passphrase";
 import SecretTable from "./SecretTable";
@@ -11,31 +9,23 @@ import api from "../utils/api";
 export default function Dashboard(props) {
   const [rows, setRows] = useState([]);
   const [busy, setBusy] = useState(false);
-  //const [passphraseDialogOpen, setPassphraseDialogOpen] = useState(false);
-  //const [passphraseNewDialogOpen, setPassphraseNewDialogOpen] = useState(false);
   const [passphrase, setPassphrase] = useState("");
   const { getPassphrase, Passphrase } = usePassphrase();
 
   const init = async (user) => {
     setBusy(true);
     setPassphrase("");
-    //setPassphraseNewDialogOpen(false);
-    //setPassphraseDialogOpen(false);
-    //const rows = await api.readAll(user);
     const rows = await api.read(user.id);
     console.log(rows);
 
-    //if (rows.length === 0) setPassphraseNewDialogOpen(true);
-    //else setPassphraseDialogOpen(true);
-    //else {
     const passphrase = await getPassphrase({
       isCancelable: false,
       ciphertextList: rows.map((item) => {
         return item.data.password;
       })
     });
+
     setPassphrase(passphrase);
-    //}
     setRows(rows);
     setBusy(false);
   };
@@ -45,6 +35,7 @@ export default function Dashboard(props) {
   }, [props.authenticatedUser]);
 
   const saveItem = async (item) => {
+    setBusy(true);
     //console.log("saveItem");
     const newRows = [...rows];
     const index = rows.findIndex((row) => {
@@ -61,9 +52,11 @@ export default function Dashboard(props) {
       newRows.push(inserted);
     }
     setRows(newRows);
+    setBusy(false);
   };
 
   const deleteItem = async (item) => {
+    setBusy(true);
     const newRows = [...rows];
     const index = rows.findIndex((row) => {
       return row.ref === item.ref;
@@ -74,27 +67,23 @@ export default function Dashboard(props) {
       newRows.splice(index, 1);
     }
     setRows(newRows);
+    setBusy(false);
   };
 
-  if (busy)
-    return (
-      <React.Fragment>
-        <LinearProgress />
+  return (
+    <React.Fragment>
+      {busy && <LinearProgress />}
+      {passphrase ? (
+        <SecretTable
+          rows={rows}
+          passphrase={passphrase}
+          saveItem={saveItem}
+          deleteItem={deleteItem}
+          authenticatedUser={props.authenticatedUser}
+        />
+      ) : (
         <Passphrase />
-      </React.Fragment>
-    );
-  else
-    return (
-      <React.Fragment>
-        {passphrase && (
-          <SecretTable
-            rows={rows}
-            passphrase={passphrase}
-            saveItem={saveItem}
-            deleteItem={deleteItem}
-            authenticatedUser={props.authenticatedUser}
-          />
-        )}
-      </React.Fragment>
-    );
+      )}
+    </React.Fragment>
+  );
 }
