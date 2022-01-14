@@ -20,12 +20,20 @@ const useSecretInfoDialog = () => {
   const openDialog = ({
     passphrase,
     item,
+    authenticatedUser,
     saveItem,
     onDecrypt,
     actionCallback
   }) => {
     setDialogOpen(true);
-    setDialogConfig({ passphrase, item, saveItem, onDecrypt, actionCallback });
+    setDialogConfig({
+      passphrase,
+      item,
+      authenticatedUser,
+      saveItem,
+      onDecrypt,
+      actionCallback
+    });
   };
 
   const resetDialog = () => {
@@ -98,7 +106,11 @@ const useSecretInfoDialog = () => {
             newItem = Object.assign({}, dialogConfig.item, {
               data: Object.assign({}, dialogConfig.item.data, data)
             });
-          else newItem = Object.assign({}, { data: data });
+          else
+            newItem = Object.assign(
+              {},
+              { data: { user_id: dialogConfig.authenticatedUser.id, ...data } }
+            );
 
           //-------------------------------
           // perform save

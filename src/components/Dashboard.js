@@ -83,8 +83,7 @@ export default function Dashboard(props) {
     return myPromise;
   };*/
   const saveItem = async (item) => {
-    console.log("saveItem");
-
+    //console.log("saveItem");
     const newRows = [...rows];
     const index = rows.findIndex((row) => {
       return row.ref === item.ref;
@@ -94,16 +93,12 @@ export default function Dashboard(props) {
       // update item
       const updated = await api.update(item.ref["@ref"].id, item.data);
       newRows[index] = updated;
-      setRows(newRows);
     } else {
       // create item
       const inserted = await api.insert(item.data);
       newRows.push(inserted);
-      setRows(newRows);
-
-      //console.log("saveItem resolved");
-      //resolve();
     }
+    setRows(newRows);
   };
 
   const deleteItem = (item) => {
@@ -142,6 +137,7 @@ export default function Dashboard(props) {
             passphrase={passphrase}
             saveItem={saveItem}
             deleteItem={deleteItem}
+            authenticatedUser={props.authenticatedUser}
           />
         )}
       </React.Fragment>

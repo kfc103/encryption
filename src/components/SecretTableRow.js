@@ -55,6 +55,7 @@ export default function SecretTableRow(props) {
     const edited = await editSecretInfo({
       passphrase: props.passphrase,
       saveItem: props.saveItem,
+      authenticatedUser: props.authenticatedUser,
       item: row,
       onDecrypt: onDecryptBtnClick
     });

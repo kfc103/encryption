@@ -37,7 +37,8 @@ export default function SecretTable(props) {
   const addBtnHandler = async () => {
     await editSecretInfo({
       passphrase: props.passphrase,
-      saveItem: props.saveItem
+      saveItem: props.saveItem,
+      authenticatedUser: props.authenticatedUser
     });
   };
 
