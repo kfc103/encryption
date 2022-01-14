@@ -16,32 +16,33 @@ export default function Dashboard(props) {
   const [passphrase, setPassphrase] = useState("");
   const { getPassphrase, Passphrase } = usePassphrase();
 
-  useEffect(() => {
-    const init = async (user) => {
-      setBusy(true);
-      setPassphrase("");
-      //setPassphraseNewDialogOpen(false);
-      //setPassphraseDialogOpen(false);
-      //const rows = await api.readAll(user);
-      const rows = await api.read(user.id);
-      console.log(rows);
+  const init = async (user) => {
+    setBusy(true);
+    setPassphrase("");
+    //setPassphraseNewDialogOpen(false);
+    //setPassphraseDialogOpen(false);
+    //const rows = await api.readAll(user);
+    const rows = await api.read(user.id);
+    console.log(rows);
 
-      //if (rows.length === 0) setPassphraseNewDialogOpen(true);
-      //else setPassphraseDialogOpen(true);
-      //else {
-      const passphrase = await getPassphrase({
-        isCancelable: false,
-        ciphertextList: rows.map((item) => {
-          return item.data.password;
-        })
-      });
-      setPassphrase(passphrase);
-      //}
-      setRows(rows);
-      setBusy(false);
-    };
+    //if (rows.length === 0) setPassphraseNewDialogOpen(true);
+    //else setPassphraseDialogOpen(true);
+    //else {
+    const passphrase = await getPassphrase({
+      isCancelable: false,
+      ciphertextList: rows.map((item) => {
+        return item.data.password;
+      })
+    });
+    setPassphrase(passphrase);
+    //}
+    setRows(rows);
+    setBusy(false);
+  };
+
+  useEffect(() => {
     init(props.authenticatedUser);
-  }, [props.authenticatedUser, getPassphrase]);
+  }, [props.authenticatedUser]);
 
   const saveItem = async (item) => {
     //console.log("saveItem");
