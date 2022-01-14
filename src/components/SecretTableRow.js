@@ -23,7 +23,7 @@ const useRowStyles = makeStyles({
 export default function SecretTableRow(props) {
   const { ConfirmDialog, getConfirmation } = useConfirmDialog();
   const { MySnackbar, showMySnackbar } = useMySnackbar();
-  const { row, passphrase, deleteItem } = props;
+  const { row, passphrase, deleteItem, disabled } = props;
   const classes = useRowStyles();
   const { SecretInfoDialog, editSecretInfo } = useSecretInfoDialog();
 
@@ -74,6 +74,7 @@ export default function SecretTableRow(props) {
           <IconButton
             aria-label="expand row"
             size="small"
+            disabled={disabled}
             onClick={onDecryptBtnClick}
           >
             <FileCopyIcon />
@@ -81,6 +82,7 @@ export default function SecretTableRow(props) {
           <IconButton
             aria-label="expand row"
             size="small"
+            disabled={disabled}
             onClick={onEditBtnClick}
           >
             <EditIcon />
@@ -88,6 +90,7 @@ export default function SecretTableRow(props) {
           <IconButton
             aria-label="expand row"
             size="small"
+            disabled={disabled}
             onClick={onDeleteBtnClick}
           >
             <DeleteIcon />

@@ -80,6 +80,7 @@ export default function Dashboard(props) {
           saveItem={saveItem}
           deleteItem={deleteItem}
           authenticatedUser={props.authenticatedUser}
+          diasbled={busy}
         />
       ) : (
         <Passphrase />
