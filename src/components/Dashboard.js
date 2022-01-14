@@ -63,8 +63,19 @@ export default function Dashboard(props) {
     setRows(newRows);
   };
 
-  const deleteItem = (item) => {
-    console.log("deleteItem");
+  const deleteItem = async (item) => {
+    const newRows = [...rows];
+    const index = rows.findIndex((row) => {
+      return row.ref === item.ref;
+    });
+    if (index !== -1) {
+      // delete item
+      await api.remove(item.ref["@ref"].id);
+      newRows.splice(index, 1);
+    }
+    setRows(newRows);
+
+    /*console.log("deleteItem");
     const myPromise = new Promise((resolve, reject) => {
       setTimeout(() => {
         const newRows = [...rows];
@@ -80,7 +91,7 @@ export default function Dashboard(props) {
         resolve();
       }, 100);
     });
-    return myPromise;
+    return myPromise;*/
   };
 
   if (busy)

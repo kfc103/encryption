@@ -7,11 +7,10 @@ exports.handler = (event, context) => {
   const client = new faunadb.Client({
     secret: process.env.FAUNADB_SERVER_SECRET
   });
-  const data = JSON.parse(event.body);
   const id = getId(event.path);
-  console.log(`Function 'encrypt-update' invoked. update id: ${id}`);
+  console.log(`Function 'encrypt-remove' invoked. remove doc-id: ${id}`);
   return client
-    .query(q.Update(q.Ref(q.Collection("passwords"), id), { data }))
+    .query(q.Delete(q.Ref(q.Collection("passwords"), id)))
     .then((response) => {
       console.log("success", response);
       return {
