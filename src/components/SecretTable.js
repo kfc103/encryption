@@ -66,6 +66,7 @@ export default function SecretTable(props) {
           color="primary"
           aria-label="add"
           className={classes.fab}
+          disabled={props.disabled}
           onClick={addBtnHandler}
         >
           <AddIcon />
