@@ -98,8 +98,8 @@ const useSecretInfoDialog = () => {
           delete data.newPassword;
           delete data.newPasswordCfm;
 
-          console.log(dialogConfig);
-          console.log(data);
+          //console.log(dialogConfig);
+          //console.log(data);
 
           let newItem;
           if (dialogConfig.item)
@@ -114,7 +114,7 @@ const useSecretInfoDialog = () => {
 
           //-------------------------------
           // perform save
-          console.log(newItem);
+          //console.log(newItem);
           if (newItem) await dialogConfig.saveItem(newItem);
           //-------------------------------
 

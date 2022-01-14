@@ -47,7 +47,7 @@ export default function SecretTableRow(props) {
       message:
         "Confirm to delete [" + row.data.name + "|" + row.data.login + "] ?"
     });
-    if (confirmed) deleteItem(row);
+    if (confirmed) await deleteItem(row);
   };
 
   const onEditBtnClick = async (e) => {

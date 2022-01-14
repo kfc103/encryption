@@ -74,24 +74,6 @@ export default function Dashboard(props) {
       newRows.splice(index, 1);
     }
     setRows(newRows);
-
-    /*console.log("deleteItem");
-    const myPromise = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const newRows = [...rows];
-        const index = rows.findIndex((row) => {
-          return row.id === item.id;
-        });
-        if (index !== -1) {
-          newRows.splice(index, 1);
-        }
-        setRows(newRows);
-
-        console.log("deleteItem resolved");
-        resolve();
-      }, 100);
-    });
-    return myPromise;*/
   };
 
   if (busy)
