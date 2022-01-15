@@ -10,13 +10,14 @@ export default function Dashboard(props) {
   const [rows, setRows] = useState([]);
   const [busy, setBusy] = useState(false);
   const [passphrase, setPassphrase] = useState("");
-  const { getPassphrase, Passphrase } = usePassphrase();
+  const { getPassphrase, Passphrase, PassphraseNew } = usePassphrase();
 
   const init = async (user) => {
     setBusy(true);
     setPassphrase("");
     const rows = await api.read(user.id);
-    console.log(rows);
+    //console.log(rows);
+    setRows(rows);
 
     const passphrase = await getPassphrase({
       isCancelable: false,
@@ -26,7 +27,6 @@ export default function Dashboard(props) {
     });
 
     setPassphrase(passphrase);
-    setRows(rows);
     setBusy(false);
   };
 
@@ -70,6 +70,7 @@ export default function Dashboard(props) {
     setBusy(false);
   };
 
+  //console.log(rows.length);
   return (
     <React.Fragment>
       {busy && <LinearProgress />}
@@ -82,8 +83,10 @@ export default function Dashboard(props) {
           authenticatedUser={props.authenticatedUser}
           diasbled={busy}
         />
-      ) : (
+      ) : rows.length > 0 ? (
         <Passphrase />
+      ) : (
+        <PassphraseNew />
       )}
     </React.Fragment>
   );

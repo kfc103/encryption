@@ -3,17 +3,9 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import IconButton from "@material-ui/core/IconButton";
-import Input from "@material-ui/core/Input";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { encrypt, decrypt } from "../utils/Dencryptor";
-import Alert from "@material-ui/lab/Alert";
-import Snackbar from "@material-ui/core/Snackbar";
-import FormHelperText from "@material-ui/core/FormHelperText";
+import { decrypt } from "../utils/Dencryptor";
+import PassphraseInput from "./PassphraseInput";
 
 const usePassphrase = () => {
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -30,16 +22,12 @@ const usePassphrase = () => {
   };
 
   const Passphrase = () => {
-    const [inputPassphrase, setInputPassphrase] = React.useState({
-      value: "",
-      showPassword: false,
-      isError: false,
-      errorMessage: ""
-    });
+    const [passphrase, setPassphrase] = React.useState("");
+    const [passphraseError, setPassphraseError] = React.useState("");
 
     const onConfirm = () => {
       resetDialog();
-      dialogConfig.actionCallback(inputPassphrase.value);
+      dialogConfig.actionCallback(passphrase);
     };
 
     const onCancel = () => {
@@ -47,84 +35,133 @@ const usePassphrase = () => {
       dialogConfig.actionCallback(null);
     };
 
-    const handleChange = (prop) => (event) => {
-      setInputPassphrase({ ...inputPassphrase, [prop]: event.target.value });
-    };
-
-    const handleClickShowPassword = () => {
-      setInputPassphrase({
-        ...inputPassphrase,
-        showPassword: !inputPassphrase.showPassword
-      });
-    };
-
-    const handleMouseDownPassword = (event) => {
-      event.preventDefault();
+    const handleChange = (event) => {
+      if (event.target?.id === "passphrase") setPassphrase(event.target.value);
     };
 
     const handleEnter = () => {
       let isError = false;
 
+      // Start of validation
       if (dialogConfig.ciphertextList) {
         for (let ciphertext of dialogConfig.ciphertextList) {
-          const decrypted = decrypt(ciphertext, inputPassphrase.value);
+          const decrypted = decrypt(ciphertext, passphrase);
           if (!decrypted) {
             isError = true;
             break;
           }
         }
       }
+      // End of validation
+
       if (isError) {
-        setInputPassphrase({
-          ...inputPassphrase,
-          isError: true,
-          errorMessage: "Incorrect passphrase"
-        });
+        setPassphraseError("Incorrect passphrase");
       } else {
         onConfirm();
       }
     };
 
     return (
-      <Dialog fullScreen open={dialogOpen} aria-labelledby="form-dialog-title">
+      <Dialog fullScreen open={dialogOpen} aria-labelledby="form-dialog">
         <DialogTitle id="form-dialog-title">
-          Enter master passphrase
+          Enter Master Passphrase
         </DialogTitle>
         <DialogContent>
-          <Input
+          <PassphraseInput
             autoFocus
-            id="enter-passphrase"
-            label="Password"
-            type={inputPassphrase.showPassword ? "text" : "password"}
-            value={inputPassphrase.password}
-            onChange={handleChange("value")}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                >
-                  {inputPassphrase.showPassword ? (
-                    <Visibility />
-                  ) : (
-                    <VisibilityOff />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            }
+            id="passphrase"
+            label="Passphrase"
+            value={passphrase}
+            onChange={handleChange}
+            errortext={passphraseError}
             fullWidth
-            error={inputPassphrase.isError}
-            aria-describedby="component-error-text"
           />
-          {inputPassphrase.isError ? (
-            <FormHelperText
-              id="component-error-text"
-              error={inputPassphrase.isError}
-            >
-              {inputPassphrase.errorMessage}
-            </FormHelperText>
-          ) : null}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            disabled={!dialogConfig.isCancelable}
+            onClick={onCancel}
+            color="primary"
+          >
+            Cancel
+          </Button>
+          <Button onClick={handleEnter} color="primary">
+            Enter
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+
+  const PassphraseNew = () => {
+    const [passphrase, setPassphrase] = React.useState("");
+    const [passphraseError, setPassphraseError] = React.useState("");
+    const [cfmPassphrase, setCfmPassphrase] = React.useState("");
+    const [cfmPassphraseError, setCfmPassphraseError] = React.useState("");
+
+    const onConfirm = () => {
+      resetDialog();
+      dialogConfig.actionCallback(passphrase);
+    };
+
+    const onCancel = () => {
+      resetDialog();
+      dialogConfig.actionCallback(null);
+    };
+
+    const handleChange = (event) => {
+      if (event.target?.id === "passphrase") setPassphrase(event.target.value);
+      else if (event.target?.id === "cfm-passphrase")
+        setCfmPassphrase(event.target.value);
+    };
+
+    const handleEnter = () => {
+      let isError = false;
+      let passphraseError = "";
+      let cfmPassphraseError = "";
+
+      // Start of validation
+      if (passphrase === "") {
+        isError = true;
+        passphraseError = "Passphrase cannot be empty";
+      }
+      if (passphrase !== cfmPassphrase) {
+        isError = true;
+        cfmPassphraseError = "Passphrase does not match";
+      }
+      // End of validation
+
+      if (isError) {
+        setPassphraseError(passphraseError);
+        setCfmPassphraseError(cfmPassphraseError);
+      } else {
+        onConfirm();
+      }
+    };
+
+    return (
+      <Dialog fullScreen open={dialogOpen} aria-labelledby="form-dialog">
+        <DialogTitle id="form-dialog-title">
+          Create New Master Passphrase
+        </DialogTitle>
+        <DialogContent>
+          <PassphraseInput
+            autoFocus
+            id="passphrase"
+            label="New Passphrase"
+            value={passphrase}
+            onChange={handleChange}
+            errortext={passphraseError}
+            fullWidth
+          />
+          <PassphraseInput
+            id="cfm-passphrase"
+            label="Confirm New Passphrase"
+            value={cfmPassphrase}
+            onChange={handleChange}
+            errortext={cfmPassphraseError}
+            fullWidth
+          />
         </DialogContent>
         <DialogActions>
           <Button
@@ -147,7 +184,7 @@ const usePassphrase = () => {
       openDialog({ actionCallback: res, ...options });
     });
 
-  return { getPassphrase, Passphrase };
+  return { getPassphrase, Passphrase, PassphraseNew };
 };
 
 export { usePassphrase };
