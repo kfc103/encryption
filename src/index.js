@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import netlifyIdentity from "netlify-identity-widget";
 
@@ -9,4 +10,9 @@ netlifyIdentity.init();
 
 const rootElement = document.getElementById("root");
 
-ReactDOM.render(<App />, rootElement);
+ReactDOM.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+  rootElement
+);

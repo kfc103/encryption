@@ -67,7 +67,7 @@ export default function SecretTableRow(props) {
       <ConfirmDialog />
       <MySnackbar />
       <SecretInfoDialog />
-      <TableRow hover className={classes.root}>
+      <TableRow hover className={classes.root} key={row.ref}>
         <TableCell>{row.data.name}</TableCell>
         <TableCell>{row.data.login}</TableCell>
         <TableCell align="right">
@@ -100,10 +100,3 @@ export default function SecretTableRow(props) {
     </React.Fragment>
   );
 }
-
-SecretTableRow.propTypes = {
-  row: PropTypes.shape({
-    login: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired
-  }).isRequired
-};

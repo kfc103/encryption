@@ -1,10 +1,14 @@
 import React, { useEffect } from "react";
+import { Suspense, lazy } from "react";
 import { useState, useCallback } from "react";
+import { Routes, Route } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import "./styles.css";
 import Dashboard from "./components/Dashboard";
-import netlifyIdentity from "netlify-identity-widget";
 import MyAppBar from "./components/MyAppBar";
+import netlifyIdentity from "netlify-identity-widget";
+import { usePassphrase } from "./components/Passphrase";
+import api from "./utils/api";
 
 const netlifyAuth = {
   //isAuthenticated: false,
@@ -35,7 +39,9 @@ export default function App() {
     )*/
   );
   const [isAuthenWidgetOpen, setIsAuthenWidgetOpen] = useState(false);
-  const [intervalId, setIntervalId] = useState(null);
+  const [rows, setRows] = useState([]);
+  const [passphrase, setPassphrase] = useState("");
+  const { getPassphrase, Passphrase, PassphraseNew } = usePassphrase();
 
   const login = () => {
     console.log("login");
@@ -54,27 +60,44 @@ export default function App() {
     });
   }, []);
 
+  const init = async (user) => {
+    //setBusy(true);
+    setPassphrase("");
+    let rows = [];
+    if (user) rows = await api.read(user.id);
+    //console.log(rows);
+    setRows(rows);
+
+    const passphrase = await getPassphrase({
+      isCancelable: false,
+      ciphertextList: rows.map((item) => {
+        return item.data.password;
+      })
+    });
+
+    setPassphrase(passphrase);
+    //setBusy(false);
+  };
+
   useEffect(() => {
     netlifyIdentity.on("open", () => setIsAuthenWidgetOpen(true));
     netlifyIdentity.on("close", () => setIsAuthenWidgetOpen(false));
     netlifyIdentity.on("error", (err) => console.error("Error", err));
+  }, []);
 
-    if (authenticatedUser) {
-      const intervalId = setInterval(() => {
+  useEffect(() => {
+    setInterval(() => {
+      if (authenticatedUser) {
         const token = authenticatedUser.token;
         const now = Date.now();
-        //this.signOut();
-        //console.log(token.expires_at);
-        //console.log(now);
-        //console.log(intervalId);
         if (now >= token.expires_at) {
           console.log("Expired");
           logout();
         }
-      }, 5000);
+      }
+    }, 5000);
 
-      setIntervalId(intervalId);
-    } else clearInterval(intervalId);
+    init(authenticatedUser);
   }, [logout, authenticatedUser]);
 
   return (
@@ -87,12 +110,30 @@ export default function App() {
         onLogout={logout}
         {...this?.props}
       />
-
-      {authenticatedUser && !isAuthenWidgetOpen && (
-        <div>
-          <Dashboard authenticatedUser={authenticatedUser} />
-        </div>
-      )}
+      {authenticatedUser &&
+        !isAuthenWidgetOpen &&
+        (passphrase ? (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <Route
+                path="*"
+                element={
+                  <Dashboard
+                    rows={rows}
+                    setRows={setRows}
+                    passphrase={passphrase}
+                    authenticatedUser={authenticatedUser}
+                  />
+                }
+              />
+              <Route path="about" element={<div>about</div>} />
+            </Routes>
+          </Suspense>
+        ) : rows.length > 0 ? (
+          <Passphrase />
+        ) : (
+          <PassphraseNew />
+        ))}
     </div>
   );
 }

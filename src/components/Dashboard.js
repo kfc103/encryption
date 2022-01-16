@@ -7,12 +7,13 @@ import SecretTable from "./SecretTable";
 import api from "../utils/api";
 
 export default function Dashboard(props) {
-  const [rows, setRows] = useState([]);
+  const { rows, setRows } = props;
+  //const [rows, setRows] = useState([]);
   const [busy, setBusy] = useState(false);
-  const [passphrase, setPassphrase] = useState("");
-  const { getPassphrase, Passphrase, PassphraseNew } = usePassphrase();
+  //const [passphrase, setPassphrase] = useState("");
+  //const { getPassphrase, Passphrase, PassphraseNew } = usePassphrase();
 
-  const init = async (user) => {
+  /*const init = async (user) => {
     setBusy(true);
     setPassphrase("");
     const rows = await api.read(user.id);
@@ -31,8 +32,8 @@ export default function Dashboard(props) {
   };
 
   useEffect(() => {
-    init(props.authenticatedUser);
-  }, [props.authenticatedUser]);
+    //init(props.authenticatedUser);
+  }, [props.authenticatedUser]);*/
 
   const saveItem = async (item) => {
     setBusy(true);
@@ -71,7 +72,7 @@ export default function Dashboard(props) {
   };
 
   //console.log(rows.length);
-  return (
+  /*return (
     <React.Fragment>
       {busy && <LinearProgress />}
       {passphrase ? (
@@ -88,6 +89,19 @@ export default function Dashboard(props) {
       ) : (
         <PassphraseNew />
       )}
+    </React.Fragment>
+  );*/
+  return (
+    <React.Fragment>
+      {busy && <LinearProgress />}
+      <SecretTable
+        rows={props.rows}
+        passphrase={props.passphrase}
+        saveItem={saveItem}
+        deleteItem={deleteItem}
+        authenticatedUser={props.authenticatedUser}
+        diasbled={busy}
+      />
     </React.Fragment>
   );
 }

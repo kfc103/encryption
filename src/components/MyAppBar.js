@@ -7,9 +7,9 @@ import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Slide from "@material-ui/core/Slide";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Tooltip from "@material-ui/core/Tooltip";
+import MyDrawer from "./MyDrawer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,14 +45,7 @@ export default function MyAppBar(props) {
       <Slide appear={false} direction="down" in={isAppBarOpen}>
         <AppBar>
           <Toolbar>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="menu"
-            >
-              <MenuIcon />
-            </IconButton>
+            <MyDrawer />
             <Typography align="left" variant="h6" className={classes.title}>
               eSecret
             </Typography>

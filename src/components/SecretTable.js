@@ -55,8 +55,8 @@ export default function SecretTable(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.rows.map((row) => (
-              <SecretTableRow key={row.ref.id} row={row} {...props} />
+            {props.rows.map((row, index) => (
+              <SecretTableRow key={index} row={row} {...props} />
             ))}
           </TableBody>
         </Table>
