@@ -10,6 +10,7 @@ import PasswordIcon from "@material-ui/icons/Menu";
 import Cloud from "@material-ui/icons/Cloud";
 import { usePassphrase } from "./Passphrase";
 import { encrypt, decrypt } from "../utils/Dencryptor";
+import api from "../utils/api";
 
 export default function Setting(props) {
   const { rows, setRows, passphrase, setPassphrase } = props;
@@ -40,6 +41,11 @@ export default function Setting(props) {
         }
       };
     });
+
+    newRows.forEach(async (item) => {
+      await api.update(item.ref["@ref"].id, item.data);
+    });
+
     setRows(newRows);
     setPassphrase(newPassphrase);
 
