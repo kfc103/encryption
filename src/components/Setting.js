@@ -1,13 +1,12 @@
 import React from "react";
 
-import Divider from "@material-ui/core/Divider";
-import MenuList from "@material-ui/core/MenuList";
-import MenuItem from "@material-ui/core/MenuItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import PasswordIcon from "@material-ui/icons/Menu";
-import Cloud from "@material-ui/icons/Cloud";
+import Divider from "@mui/material/Divider";
+import MenuList from "@mui/material/MenuList";
+import MenuItem from "@mui/material//MenuItem";
+import ListItemText from "@mui/material//ListItemText";
+import ListItemIcon from "@mui/material//ListItemIcon";
+import LinearProgress from "@mui/material//LinearProgress";
+import PasswordIcon from "@mui/icons-material/Password";
 import { usePassphrase } from "./Passphrase";
 import { encrypt, decrypt } from "../utils/Dencryptor";
 import api from "../utils/api";
@@ -66,12 +65,6 @@ export default function Setting(props) {
           <ListItemText>Change Master Passphrase</ListItemText>
         </MenuItem>
         <Divider />
-        <MenuItem>
-          <ListItemIcon>
-            <Cloud fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Web Clipboard</ListItemText>
-        </MenuItem>
       </MenuList>
       <Passphrase />
     </React.Fragment>

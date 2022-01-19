@@ -1,8 +1,7 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import { useState } from "react";
+import LinearProgress from "@mui/material/LinearProgress";
 
-import { usePassphrase } from "./Passphrase";
 import SecretTable from "./SecretTable";
 import api from "../utils/api";
 

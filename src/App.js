@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Suspense, lazy } from "react";
 import { useState, useCallback } from "react";
 import { Routes, Route } from "react-router-dom";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import CssBaseline from "@mui/material/CssBaseline";
 import "./styles.css";
 import Dashboard from "./components/Dashboard";
 import MyAppBar from "./components/MyAppBar";
