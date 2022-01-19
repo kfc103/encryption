@@ -6,6 +6,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import "./styles.css";
 import Dashboard from "./components/Dashboard";
 import MyAppBar from "./components/MyAppBar";
+import Setting from "./components/Setting";
 import netlifyIdentity from "netlify-identity-widget";
 import { usePassphrase } from "./components/Passphrase";
 import api from "./utils/api";
@@ -41,7 +42,7 @@ export default function App() {
   const [isAuthenWidgetOpen, setIsAuthenWidgetOpen] = useState(false);
   const [rows, setRows] = useState([]);
   const [passphrase, setPassphrase] = useState("");
-  const { getPassphrase, Passphrase, PassphraseNew } = usePassphrase();
+  const { getPassphrase, Passphrase, MODE } = usePassphrase();
 
   const login = () => {
     console.log("login");
@@ -69,6 +70,7 @@ export default function App() {
     setRows(rows);
 
     const passphrase = await getPassphrase({
+      mode: rows.length > 0 ? MODE.VERIFY : MODE.CREATE,
       isCancelable: false,
       ciphertextList: rows.map((item) => {
         return item.data.password;
@@ -126,13 +128,22 @@ export default function App() {
                   />
                 }
               />
+              <Route
+                path="setting"
+                element={
+                  <Setting
+                    rows={rows}
+                    setRows={setRows}
+                    passphrase={passphrase}
+                    setPassphrase={setPassphrase}
+                  />
+                }
+              />
               <Route path="about" element={<div>about</div>} />
             </Routes>
           </Suspense>
-        ) : rows.length > 0 ? (
-          <Passphrase />
         ) : (
-          <PassphraseNew />
+          <Passphrase />
         ))}
     </div>
   );

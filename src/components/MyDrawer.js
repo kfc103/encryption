@@ -15,6 +15,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import HomeIcon from "@material-ui/icons/Home";
 import InfoIcon from "@material-ui/icons/Info";
+import SettingsIcon from "@material-ui/icons/Settings";
 
 const drawerWidth = 240;
 
@@ -96,6 +97,18 @@ export default function PersistentDrawerLeft() {
                 <HomeIcon />
               </ListItemIcon>
               <ListItemText primary="Home" />
+            </ListItem>
+            <ListItem
+              button
+              key="setting"
+              component={Link}
+              to={`/setting`}
+              onClick={handleDrawerClose}
+            >
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Settings" />
             </ListItem>
             <ListItem
               button
