@@ -118,7 +118,7 @@ export default function App() {
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
               <Route
-                path="*"
+                path="/"
                 element={
                   <Dashboard
                     rows={rows}
@@ -129,7 +129,7 @@ export default function App() {
                 }
               />
               <Route
-                path="setting"
+                path="/setting"
                 element={
                   <Setting
                     rows={rows}
@@ -139,7 +139,7 @@ export default function App() {
                   />
                 }
               />
-              <Route path="about" element={<div>about</div>} />
+              <Route path="/about" element={<div>about</div>} />
             </Routes>
           </Suspense>
         ) : (

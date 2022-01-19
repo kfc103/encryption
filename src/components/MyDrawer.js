@@ -114,7 +114,7 @@ export default function PersistentDrawerLeft() {
               button
               key="about"
               component={Link}
-              to={`/About`}
+              to={`/about`}
               onClick={handleDrawerClose}
             >
               <ListItemIcon>
