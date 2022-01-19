@@ -29,25 +29,29 @@ export default function Setting(props) {
     });
     //console.log(newPassphrase);
 
-    let newRows = rows.map((item) => {
-      return {
-        ...item,
-        data: {
-          ...item.data,
-          password: encrypt(
-            decrypt(item.data.password, passphrase),
-            newPassphrase
-          )
-        }
-      };
-    });
+    if (newPassphrase) {
+      // update with new passphrase
+      // decrypt with old passphrase and then encrypt with new passphrase
+      let newRows = rows.map((item) => {
+        return {
+          ...item,
+          data: {
+            ...item.data,
+            password: encrypt(
+              decrypt(item.data.password, passphrase),
+              newPassphrase
+            )
+          }
+        };
+      });
 
-    newRows.forEach(async (item) => {
-      await api.update(item.ref["@ref"].id, item.data);
-    });
+      newRows.forEach(async (item) => {
+        await api.update(item.ref["@ref"].id, item.data);
+      });
 
-    setRows(newRows);
-    setPassphrase(newPassphrase);
+      setRows(newRows);
+      setPassphrase(newPassphrase);
+    }
 
     setBusy(false);
   };
