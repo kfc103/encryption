@@ -36,6 +36,7 @@ const PassphraseInput = (props) => {
           </InputAdornment>
         }
         aria-describedby="component-error-text"
+        error={props.errortext !== ""}
       />
       {props.errortext && (
         <FormHelperText

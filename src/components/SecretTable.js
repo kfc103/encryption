@@ -1,6 +1,4 @@
 import React from "react";
-// /import { useState, useCallback } from "react";
-import { makeStyles } from "@mui/styles";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -14,24 +12,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Container from "@mui/material/Container";
 import { useSecretInfoDialog } from "./SecretInfoDialog";
 
-// A style sheet
-const useStyles = makeStyles((theme) => {
-  return {
-    fab: {
-      position: "fixed",
-      margin: "auto",
-      bottom: theme.spacing(2)
-    },
-    flexbox: {
-      display: "flex",
-      width: "100%",
-      justifyContent: "center"
-    }
-  };
-});
-
 export default function SecretTable(props) {
-  const classes = useStyles();
   const { SecretInfoDialog, editSecretInfo } = useSecretInfoDialog();
 
   const addBtnHandler = async () => {
@@ -61,11 +42,17 @@ export default function SecretTable(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      <Container className={classes.flexbox}>
+      <Container
+        sx={{ display: "flex", width: "100%", justifyContent: "center" }}
+      >
         <Fab
           color="primary"
           aria-label="add"
-          className={classes.fab}
+          sx={{
+            position: "fixed",
+            margin: "auto",
+            bottom: 10
+          }}
           disabled={props.disabled}
           onClick={addBtnHandler}
         >

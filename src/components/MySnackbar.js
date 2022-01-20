@@ -25,6 +25,7 @@ const useMySnackbar = () => {
     return (
       <Snackbar
         open={open}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         autoHideDuration={dialogConfig?.duration ? dialogConfig.duration : 5000}
         onClose={onClose}
       >

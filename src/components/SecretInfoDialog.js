@@ -158,6 +158,7 @@ const useSecretInfoDialog = () => {
                 <TextField
                   fullWidth
                   label="Name"
+                  variant="standard"
                   helperText={fieldState.error?.message}
                   {...field}
                   {...fieldState}
@@ -178,6 +179,7 @@ const useSecretInfoDialog = () => {
                   required
                   fullWidth
                   label="Login"
+                  variant="standard"
                   helperText={fieldState.error?.message}
                   {...field}
                   {...fieldState}
@@ -199,6 +201,7 @@ const useSecretInfoDialog = () => {
                     disabled
                     fullWidth
                     label="Password"
+                    variant="standard"
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
@@ -230,6 +233,7 @@ const useSecretInfoDialog = () => {
                   required={!dialogConfig.item?.data.password}
                   label="New Password"
                   type="password"
+                  variant="standard"
                   helperText={fieldState.error?.message}
                   {...field}
                   {...fieldState}
@@ -249,6 +253,7 @@ const useSecretInfoDialog = () => {
                   required={!dialogConfig.item?.data.password}
                   label="Confirm New Password"
                   type="password"
+                  variant="standard"
                   helperText={fieldState.error?.message}
                   {...field}
                   {...fieldState}
