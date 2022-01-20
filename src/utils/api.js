@@ -1,12 +1,11 @@
 /* Api methods to call /functions */
 
 const read = (userId) => {
-  /*return fetch(
+  return fetch(
     `https://esecret.netlify.app/.netlify/functions/encrypt-read/${userId}`
   ).then((response) => {
     return response.json();
-  });*/
-  return [];
+  });
 };
 
 const insert = (data) => {
