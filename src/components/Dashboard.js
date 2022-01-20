@@ -7,32 +7,7 @@ import api from "../utils/api";
 
 export default function Dashboard(props) {
   const { rows, setRows } = props;
-  //const [rows, setRows] = useState([]);
   const [busy, setBusy] = useState(false);
-  //const [passphrase, setPassphrase] = useState("");
-  //const { getPassphrase, Passphrase, PassphraseNew } = usePassphrase();
-
-  /*const init = async (user) => {
-    setBusy(true);
-    setPassphrase("");
-    const rows = await api.read(user.id);
-    //console.log(rows);
-    setRows(rows);
-
-    const passphrase = await getPassphrase({
-      isCancelable: false,
-      ciphertextList: rows.map((item) => {
-        return item.data.password;
-      })
-    });
-
-    setPassphrase(passphrase);
-    setBusy(false);
-  };
-
-  useEffect(() => {
-    //init(props.authenticatedUser);
-  }, [props.authenticatedUser]);*/
 
   const saveItem = async (item) => {
     setBusy(true);
@@ -70,26 +45,6 @@ export default function Dashboard(props) {
     setBusy(false);
   };
 
-  //console.log(rows.length);
-  /*return (
-    <React.Fragment>
-      {busy && <LinearProgress />}
-      {passphrase ? (
-        <SecretTable
-          rows={rows}
-          passphrase={passphrase}
-          saveItem={saveItem}
-          deleteItem={deleteItem}
-          authenticatedUser={props.authenticatedUser}
-          diasbled={busy}
-        />
-      ) : rows.length > 0 ? (
-        <Passphrase />
-      ) : (
-        <PassphraseNew />
-      )}
-    </React.Fragment>
-  );*/
   return (
     <React.Fragment>
       {busy && <LinearProgress />}

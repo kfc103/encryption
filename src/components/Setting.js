@@ -9,12 +9,14 @@ import LinearProgress from "@mui/material//LinearProgress";
 import PasswordIcon from "@mui/icons-material/Password";
 import { usePassphrase } from "./Passphrase";
 import { encrypt, decrypt } from "../utils/Dencryptor";
+import { useMySnackbar } from "./MySnackbar";
 import api from "../utils/api";
 
 export default function Setting(props) {
   const { rows, setRows, passphrase, setPassphrase } = props;
   const { getPassphrase, Passphrase, MODE } = usePassphrase();
   const [busy, setBusy] = React.useState(false);
+  const { MySnackbar, showMySnackbar } = useMySnackbar();
 
   const handleChangePassphrase = async () => {
     setBusy(true);
@@ -50,6 +52,10 @@ export default function Setting(props) {
 
       setRows(newRows);
       setPassphrase(newPassphrase);
+      showMySnackbar({
+        message: "Master Passphrase is updated",
+        duration: 3000
+      });
     }
 
     setBusy(false);
@@ -67,6 +73,7 @@ export default function Setting(props) {
         <Divider />
       </MenuList>
       <Passphrase />
+      <MySnackbar />
     </React.Fragment>
   );
 }
